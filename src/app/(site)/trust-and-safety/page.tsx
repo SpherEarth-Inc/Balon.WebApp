@@ -1,6 +1,7 @@
 import { PageHero } from "@/components/layout/page-hero";
 import { ContentBlock } from "@/components/sections/content-block";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { BackToContents } from "@/components/sections/page-contents";
 import { TrustSafetyPageSections } from "@/components/sections/trust-safety-page-sections";
 import { trustSafetyContent } from "@/lib/content/pages/trust-safety";
 import { createMetadata } from "@/lib/content/site";
@@ -46,9 +47,17 @@ export default function TrustAndSafetyPage() {
               </div>
             ))}
           </div>
+          <div className="mx-auto mt-8 max-w-5xl">
+            <BackToContents />
+          </div>
         </div>
       </section>
       <ContentBlock section={trustSafetyContent.protectingYourself} />
+      <div className="container mx-auto container-padding pb-8">
+        <div className="mx-auto max-w-3xl">
+          <BackToContents />
+        </div>
+      </div>
       <CtaBanner
         title={finalCta.title}
         description={finalCta.description}

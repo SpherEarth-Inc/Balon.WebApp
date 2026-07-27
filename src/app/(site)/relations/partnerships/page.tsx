@@ -1,13 +1,14 @@
 import { AppLink } from "@/components/ui/app-link";
 import { PageHero } from "@/components/layout/page-hero";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { ButtonLink } from "@/components/ui/button-link";
 import {
-  partnershipsContent,
-  type PartnerCategory,
-} from "@/lib/content/pages/partnerships";
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
+import { ButtonLink } from "@/components/ui/button-link";
+import { partnershipsContent } from "@/lib/content/pages/partnerships";
 import { createMetadata } from "@/lib/content/site";
-import type { ContentSection } from "@/types/content";
 
 export const metadata = createMetadata({
   title: partnershipsContent.meta.title,
@@ -21,64 +22,22 @@ const breadcrumb = [
   { label: "Strategic Partnerships" },
 ];
 
-function OverviewSection({ section }: { section: ContentSection }) {
-  return (
-    <div>
-      {section.subtitle && (
-        <p className="section-subheading">
-          {section.subtitle}
-        </p>
-      )}
-      {section.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{section.description}</p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {section.bullets && (
-        <ul className="mt-4 space-y-2">
-          {section.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-      {section.trailingParagraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-    </div>
-  );
-}
-
-function CategorySection({ category }: { category: PartnerCategory }) {
-  return (
-    <div>
-      <p className="section-subheading">
-        {category.subtitle}
-      </p>
-      <p className="mt-3 text-muted-foreground leading-relaxed">{category.description}</p>
-      {category.bullets && (
-        <ul className="mt-4 space-y-2">
-          {category.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 export default function PartnershipsPage() {
   const { meta, intro, categories, finalCta } = partnershipsContent;
+
+  const categorySections = categories.map((category) => ({
+    id: category.id,
+    title: category.subtitle,
+    subtitle: category.subtitle,
+    description: category.description,
+    bullets: category.bullets,
+  }));
+
+  const contentsLinks = pageContentsLinksFromSections([
+    partnershipsContent.whyPartner,
+    ...categorySections,
+    partnershipsContent.principles,
+  ]);
 
   return (
     <>
@@ -98,14 +57,15 @@ export default function PartnershipsPage() {
                 {p}
               </p>
             ))}
+            <PageContentsNav links={contentsLinks} />
           </div>
 
           <div className="mx-auto mt-12 max-w-3xl space-y-10">
-            <OverviewSection section={partnershipsContent.whyPartner} />
-            {categories.map((category) => (
-              <CategorySection key={category.id} category={category} />
+            <ContentSectionBlock section={partnershipsContent.whyPartner} />
+            {categorySections.map((section) => (
+              <ContentSectionBlock key={section.id} section={section} />
             ))}
-            <OverviewSection section={partnershipsContent.principles} />
+            <ContentSectionBlock section={partnershipsContent.principles} />
           </div>
 
           <p className="mx-auto mt-12 max-w-3xl text-muted-foreground leading-relaxed">

@@ -1,26 +1,13 @@
 import { AppLink } from "@/components/ui/app-link";
-import type { ContentSection } from "@/types/content";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { OfficialCommunicationsSection } from "@/components/sections/official-communications-section";
+import {
+  BackToContents,
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { ButtonLink } from "@/components/ui/button-link";
 import { programsContent } from "@/lib/content/pages/programs";
-
-function DetailBlock({ item }: { item: ContentSection }) {
-  const subheading = item.subtitle ?? item.title;
-
-  return (
-    <div>
-      {subheading && <p className="section-subheading">{subheading}</p>}
-      {item.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{item.description}</p>
-      )}
-      {item.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-    </div>
-  );
-}
 
 export function ProgramsPageSections() {
   const { intro } = programsContent;
@@ -31,6 +18,11 @@ export function ProgramsPageSections() {
     programsContent.playerJourney,
     programsContent.calendar,
     programsContent.investment,
+  ];
+
+  const contentsLinks = [
+    ...pageContentsLinksFromSections(details),
+    { id: "official-communications", label: "Official Communications" },
   ];
 
   return (
@@ -63,13 +55,17 @@ export function ProgramsPageSections() {
             </AppLink>
             .
           </p>
+          <PageContentsNav links={contentsLinks} />
         </div>
 
         <div className="mx-auto mt-12 max-w-3xl space-y-10">
           {details.map((item) => (
-            <DetailBlock key={item.id} item={item} />
+            <ContentSectionBlock key={item.id} section={item} />
           ))}
-          <OfficialCommunicationsSection />
+          <div id="official-communications" className="scroll-mt-24">
+            <OfficialCommunicationsSection />
+            <BackToContents />
+          </div>
         </div>
 
         <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">

@@ -1,9 +1,13 @@
 import { AppLink } from "@/components/ui/app-link";
 import { PageHero } from "@/components/layout/page-hero";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
+import {
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { ButtonLink } from "@/components/ui/button-link";
 import { overviewPartnersSponsorsContent } from "@/lib/content/pages/overview-partners-sponsors";
 import { createMetadata } from "@/lib/content/site";
-import type { ContentSection } from "@/types/content";
 
 export const metadata = createMetadata({
   title: overviewPartnersSponsorsContent.meta.title,
@@ -16,40 +20,9 @@ const breadcrumb = [
   { label: "Overview" },
 ];
 
-function OverviewSection({ section }: { section: ContentSection }) {
-  const subheading = section.subtitle ?? section.title;
-
-  return (
-    <div>
-      {subheading && (
-        <p className="section-subheading">
-          {subheading}
-        </p>
-      )}
-      {section.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{section.description}</p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {section.bullets && (
-        <ul className="mt-4 space-y-2">
-          {section.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
 export default function RelationsPage() {
   const { meta, intro, sections } = overviewPartnersSponsorsContent;
+  const contentsLinks = pageContentsLinksFromSections(sections);
 
   return (
     <>
@@ -89,11 +62,12 @@ export default function RelationsPage() {
               </AppLink>
               .
             </p>
+            <PageContentsNav links={contentsLinks} />
           </div>
 
           <div className="mx-auto mt-12 max-w-3xl space-y-10">
             {sections.map((section) => (
-              <OverviewSection key={section.id} section={section} />
+              <ContentSectionBlock key={section.id} section={section} />
             ))}
           </div>
 

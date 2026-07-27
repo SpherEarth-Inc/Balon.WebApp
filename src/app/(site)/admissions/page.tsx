@@ -1,6 +1,12 @@
 import { PageHero } from "@/components/layout/page-hero";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { OfficialCommunicationsSection } from "@/components/sections/official-communications-section";
+import {
+  BackToContents,
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { StepsTimeline } from "@/components/sections/steps-timeline";
 import { ButtonLink } from "@/components/ui/button-link";
 import { ScrollToLink } from "@/components/ui/scroll-to-link";
@@ -54,6 +60,12 @@ export default function AdmissionsPage() {
     admissionsContent.international,
   ];
 
+  const contentsLinks = [
+    ...pageContentsLinksFromSections(details),
+    { id: "official-communications", label: "Official Communications" },
+    { id: ADMISSIONS_PROCESS_ID, label: "Admissions Process" },
+  ];
+
   return (
     <>
       <PageHero
@@ -72,47 +84,17 @@ export default function AdmissionsPage() {
                 {i === 1 ? renderParagraphWithProcessLink(p) : p}
               </p>
             ))}
+            <PageContentsNav links={contentsLinks} />
           </div>
 
           <div className="mx-auto mt-12 max-w-3xl space-y-10">
             {details.map((item) => (
-              <div key={item.id}>
-                {item.subtitle && (
-                  <p className="section-subheading">
-                    {item.subtitle}
-                  </p>
-                )}
-                {item.description && (
-                  <p className="mt-3 text-muted-foreground leading-relaxed">{item.description}</p>
-                )}
-                {item.paragraphs?.map((p, i) => (
-                  <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-                    {p}
-                  </p>
-                ))}
-                {item.bullets && (
-                  <ul className="mt-4 space-y-2">
-                    {item.bullets.map((b) => (
-                      <li key={b} className="flex items-start gap-2 text-muted-foreground">
-                        <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {item.items && (
-                  <div className="mt-4 space-y-4">
-                    {item.items.map((sub) => (
-                      <div key={sub.title}>
-                        <h4 className="font-bold">{sub.title}</h4>
-                        <p className="mt-1 text-muted-foreground leading-relaxed">{sub.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ContentSectionBlock key={item.id} section={item} />
             ))}
-            <OfficialCommunicationsSection />
+            <div id="official-communications" className="scroll-mt-24">
+              <OfficialCommunicationsSection />
+              <BackToContents />
+            </div>
           </div>
 
           <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">
@@ -132,6 +114,11 @@ export default function AdmissionsPage() {
         subtitle="Your journey from application to enrollment"
         steps={admissionsContent.steps}
       />
+      <div className="container mx-auto container-padding pb-8">
+        <div className="mx-auto max-w-3xl">
+          <BackToContents />
+        </div>
+      </div>
       <CtaBanner
         title={finalCta.title}
         description={finalCta.description}

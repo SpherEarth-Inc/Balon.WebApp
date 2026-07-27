@@ -22,7 +22,7 @@ export function ContentBlock({
   const hasImage = Boolean(section.image);
 
   return (
-    <section className={cn("section-padding", className)}>
+    <section id={section.id} className={cn("section-padding", section.id && "scroll-mt-24", className)}>
       <div className="container mx-auto container-padding">
         <div
           className={cn(

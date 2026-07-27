@@ -4,60 +4,19 @@ import { useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { AppLink } from "@/components/ui/app-link";
 import { AdvisorForm } from "@/components/forms/advisor-form";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { OfficialCommunicationsSection } from "@/components/sections/official-communications-section";
+import {
+  BackToContents,
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { Button } from "@/components/ui/button";
+import { ScrollToLink } from "@/components/ui/scroll-to-link";
 import { advisorContent } from "@/lib/content/pages/advisor";
-import type { ContentSection } from "@/types/content";
 import { cn } from "@/lib/utils";
 
 type AdvisorStep = "intro" | "form" | "submitted";
-
-function DetailBlock({ section }: { section: ContentSection }) {
-  const subheading = section.subtitle ?? section.title;
-
-  return (
-    <div>
-      {subheading && (
-        <p className="section-subheading">
-          {subheading}
-        </p>
-      )}
-      {section.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{section.description}</p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {section.items && (
-        <ol className="mt-4 space-y-4">
-          {section.items.map((item) => (
-            <li key={item.title}>
-              <p className="font-semibold text-foreground">{item.title}</p>
-              <p className="mt-1 text-muted-foreground leading-relaxed">{item.description}</p>
-            </li>
-          ))}
-        </ol>
-      )}
-      {section.bullets && (
-        <ul className="mt-4 space-y-2">
-          {section.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-      {section.trailingParagraphs?.map((p, i) => (
-        <p key={`trail-${i}`} className="mt-4 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-    </div>
-  );
-}
 
 export function AdvisorPageContent() {
   const {
@@ -102,6 +61,12 @@ export function AdvisorPageContent() {
     closing,
   ];
 
+  const contentsLinks = [
+    ...pageContentsLinksFromSections(detailSections),
+    { id: "official-communications", label: "Official Communications" },
+    { id: "express-interest", label: "Express Your Interest" },
+  ];
+
   return (
     <section
       id="advisor-application"
@@ -132,24 +97,29 @@ export function AdvisorPageContent() {
               </p>
               <p className="mt-4 text-muted-foreground leading-relaxed">
                 Ready to apply?{" "}
-                <button
-                  type="button"
-                  onClick={() => setStep("form")}
-                  className="inline-text-link"
-                >
+                <ScrollToLink targetId="express-interest" className="inline-text-link">
                   Express your interest
-                </button>
+                </ScrollToLink>
                 .
               </p>
 
+              <PageContentsNav links={contentsLinks} />
+
               <div className="mt-12 space-y-10">
                 {detailSections.map((section) => (
-                  <DetailBlock key={section.id} section={section} />
+                  <ContentSectionBlock
+                    key={section.id}
+                    section={section}
+                    itemsAsOrderedList
+                  />
                 ))}
-                <OfficialCommunicationsSection />
+                <div id="official-communications" className="scroll-mt-24">
+                  <OfficialCommunicationsSection />
+                  <BackToContents />
+                </div>
               </div>
 
-              <div className="mt-12">
+              <div id="express-interest" className="mt-12 scroll-mt-24">
                 <Button
                   type="button"
                   onClick={() => setStep("form")}
@@ -157,6 +127,7 @@ export function AdvisorPageContent() {
                 >
                   Express Your Interest
                 </Button>
+                <BackToContents />
               </div>
             </>
           )}

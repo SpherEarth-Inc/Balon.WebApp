@@ -1,37 +1,14 @@
 import { AppLink } from "@/components/ui/app-link";
-import type { ContentSection } from "@/types/content";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
+import {
+  BackToContents,
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { CalendlyWidget } from "@/components/embeds/calendly-widget";
 import { ButtonLink } from "@/components/ui/button-link";
 import { consultationContent } from "@/lib/content/pages/consultation";
 import { parentsContent } from "@/lib/content/pages/parents";
-
-function DetailBlock({ item }: { item: ContentSection }) {
-  const subheading = item.subtitle ?? item.title;
-
-  return (
-    <div>
-      {subheading && <p className="section-subheading">{subheading}</p>}
-      {item.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{item.description}</p>
-      )}
-      {item.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {item.bullets && (
-        <ul className="mt-4 space-y-2">
-          {item.bullets.map((bullet) => (
-            <li key={bullet} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {bullet}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
 
 export function ConsultationPageSections() {
   const { intro } = consultationContent;
@@ -41,6 +18,11 @@ export function ConsultationPageSections() {
     consultationContent.whoShouldAttend,
     consultationContent.beforeYourCall,
     consultationContent.whatHappensNext,
+  ];
+
+  const contentsLinks = [
+    ...pageContentsLinksFromSections(details),
+    { id: "calendly", label: "Book Your Consultation" },
   ];
 
   return (
@@ -70,16 +52,18 @@ export function ConsultationPageSections() {
             </AppLink>
             .
           </p>
+          <PageContentsNav links={contentsLinks} />
         </div>
 
         <div className="mx-auto mt-12 max-w-3xl space-y-10">
           {details.map((item) => (
-            <DetailBlock key={item.id} item={item} />
+            <ContentSectionBlock key={item.id} section={item} />
           ))}
         </div>
 
         <div id="calendly" className="mx-auto mt-12 max-w-3xl scroll-mt-24">
           <CalendlyWidget />
+          <BackToContents />
         </div>
 
         {intro.cta && (

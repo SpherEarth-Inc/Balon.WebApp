@@ -1,62 +1,13 @@
 import { AppLink } from "@/components/ui/app-link";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
+import {
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { ButtonLink } from "@/components/ui/button-link";
 import { ScrollToButtonLink, ScrollToLink } from "@/components/ui/scroll-to-link";
 import { trustSafetyContent } from "@/lib/content/pages/trust-safety";
-import type { ContentSection } from "@/types/content";
 import { cn } from "@/lib/utils";
-
-function DetailBlock({ section }: { section: ContentSection }) {
-  const subheading = section.subtitle ?? section.title;
-
-  return (
-    <div id={section.id} className="scroll-mt-24">
-      {subheading && <p className="section-subheading">{subheading}</p>}
-      {section.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{section.description}</p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {section.bullets && (
-        <ul className="mt-4 space-y-2">
-          {section.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-      {section.cta && (
-        <div id={section.id ? `${section.id}-action` : undefined} className="scroll-mt-24">
-          {section.cta.href.startsWith("#") ? (
-            <ScrollToButtonLink
-              targetId={section.cta.href.slice(1)}
-              variant="outline"
-              size="lg"
-              className="mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg"
-            >
-              {section.cta.label}
-            </ScrollToButtonLink>
-          ) : (
-            <ButtonLink
-              href={section.cta.href}
-              variant={section.cta.variant === "primary" ? "default" : "outline"}
-              className={cn(
-                "mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg",
-                section.cta.variant === "primary" && "bg-brand-green hover:bg-brand-green/90"
-              )}
-            >
-              {section.cta.label}
-            </ButtonLink>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function TrustSafetyPageSections() {
   const { intro, promise } = trustSafetyContent;
@@ -68,6 +19,12 @@ export function TrustSafetyPageSections() {
     trustSafetyContent.paymentSecurity,
     trustSafetyContent.privacy,
     trustSafetyContent.reporting,
+  ];
+
+  const contentsLinks = [
+    ...pageContentsLinksFromSections([promise, ...detailSections]),
+    { id: "commitments", label: "Our Commitments" },
+    { id: "fraud-prevention", label: "Protecting Yourself" },
   ];
 
   return (
@@ -132,14 +89,71 @@ export function TrustSafetyPageSections() {
             .
           </p>
 
+          <PageContentsNav links={contentsLinks} />
+
           <div className="mt-10">
-            <DetailBlock section={promise} />
+            <ContentSectionBlock section={promise}>
+              {promise.cta && (
+                <div className="scroll-mt-24">
+                  {promise.cta.href.startsWith("#") ? (
+                    <ScrollToButtonLink
+                      targetId={promise.cta.href.slice(1)}
+                      variant="outline"
+                      size="lg"
+                      className="mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg"
+                    >
+                      {promise.cta.label}
+                    </ScrollToButtonLink>
+                  ) : (
+                    <ButtonLink
+                      href={promise.cta.href}
+                      variant={promise.cta.variant === "primary" ? "default" : "outline"}
+                      className={cn(
+                        "mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg",
+                        promise.cta.variant === "primary" && "bg-brand-green hover:bg-brand-green/90"
+                      )}
+                    >
+                      {promise.cta.label}
+                    </ButtonLink>
+                  )}
+                </div>
+              )}
+            </ContentSectionBlock>
           </div>
         </div>
 
         <div className="mx-auto mt-12 max-w-3xl space-y-10">
           {detailSections.map((section) => (
-            <DetailBlock key={section.id ?? section.subtitle} section={section} />
+            <ContentSectionBlock key={section.id ?? section.subtitle} section={section}>
+              {section.cta && (
+                <div
+                  id={section.id ? `${section.id}-action` : undefined}
+                  className="scroll-mt-24"
+                >
+                  {section.cta.href.startsWith("#") ? (
+                    <ScrollToButtonLink
+                      targetId={section.cta.href.slice(1)}
+                      variant="outline"
+                      size="lg"
+                      className="mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg"
+                    >
+                      {section.cta.label}
+                    </ScrollToButtonLink>
+                  ) : (
+                    <ButtonLink
+                      href={section.cta.href}
+                      variant={section.cta.variant === "primary" ? "default" : "outline"}
+                      className={cn(
+                        "mt-6 h-12 w-full rounded-none px-8 text-base sm:w-auto md:h-14 md:px-10 md:text-lg",
+                        section.cta.variant === "primary" && "bg-brand-green hover:bg-brand-green/90"
+                      )}
+                    >
+                      {section.cta.label}
+                    </ButtonLink>
+                  )}
+                </div>
+              )}
+            </ContentSectionBlock>
           ))}
         </div>
       </div>

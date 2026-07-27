@@ -1,10 +1,14 @@
 import { AppLink } from "@/components/ui/app-link";
 import { PageHero } from "@/components/layout/page-hero";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import {
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { ButtonLink } from "@/components/ui/button-link";
 import { sponsorshipContent } from "@/lib/content/pages/sponsorship";
 import { createMetadata } from "@/lib/content/site";
-import type { ContentSection } from "@/types/content";
 
 export const metadata = createMetadata({
   title: sponsorshipContent.meta.title,
@@ -18,26 +22,10 @@ const breadcrumb = [
   { label: "Sponsorship" },
 ];
 
-function OverviewSection({ section }: { section: ContentSection }) {
-  return (
-    <div>
-      {section.subtitle && (
-        <p className="section-subheading">
-          {section.subtitle}
-        </p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 export default function SponsorshipPage() {
   const { meta, intro, finalCta } = sponsorshipContent;
   const sections = [sponsorshipContent.sponsorFunded, sponsorshipContent.commitment];
+  const contentsLinks = pageContentsLinksFromSections(sections);
 
   return (
     <>
@@ -57,11 +45,12 @@ export default function SponsorshipPage() {
                 {p}
               </p>
             ))}
+            <PageContentsNav links={contentsLinks} />
           </div>
 
           <div className="mx-auto mt-12 max-w-3xl space-y-10">
             {sections.map((section) => (
-              <OverviewSection key={section.id} section={section} />
+              <ContentSectionBlock key={section.id} section={section} />
             ))}
           </div>
 

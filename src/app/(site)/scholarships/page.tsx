@@ -1,10 +1,15 @@
 import { AppLink } from "@/components/ui/app-link";
 import { PageHero } from "@/components/layout/page-hero";
+import { ContentSectionBlock } from "@/components/sections/content-section-block";
 import { OfficialCommunicationsSection } from "@/components/sections/official-communications-section";
+import {
+  BackToContents,
+  PageContentsNav,
+  pageContentsLinksFromSections,
+} from "@/components/sections/page-contents";
 import { ButtonLink } from "@/components/ui/button-link";
 import { scholarshipsContent } from "@/lib/content/pages/scholarships";
 import { createMetadata } from "@/lib/content/site";
-import type { ContentSection } from "@/types/content";
 
 export const metadata = createMetadata({
   title: scholarshipsContent.meta.title,
@@ -17,41 +22,6 @@ const breadcrumb = [
   { label: scholarshipsContent.meta.title },
 ];
 
-function OverviewSection({ section }: { section: ContentSection }) {
-  return (
-    <div>
-      {section.subtitle && (
-        <p className="section-subheading">
-          {section.subtitle}
-        </p>
-      )}
-      {section.description && (
-        <p className="mt-3 text-muted-foreground leading-relaxed">{section.description}</p>
-      )}
-      {section.paragraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-      {section.bullets && (
-        <ul className="mt-4 space-y-2">
-          {section.bullets.map((b) => (
-            <li key={b} className="flex items-start gap-2 text-muted-foreground">
-              <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand-green" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
-      {section.trailingParagraphs?.map((p, i) => (
-        <p key={i} className="mt-3 text-muted-foreground leading-relaxed">
-          {p}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 export default function ScholarshipsPage() {
   const { meta, intro } = scholarshipsContent;
   const overviewSections = [
@@ -60,6 +30,11 @@ export default function ScholarshipsPage() {
     scholarshipsContent.needsBased,
     scholarshipsContent.eligibility,
     scholarshipsContent.selectionProcess,
+  ];
+
+  const contentsLinks = [
+    ...pageContentsLinksFromSections(overviewSections),
+    { id: "official-communications", label: "Official Communications" },
   ];
 
   return (
@@ -80,13 +55,17 @@ export default function ScholarshipsPage() {
                 {p}
               </p>
             ))}
+            <PageContentsNav links={contentsLinks} />
           </div>
 
           <div className="mx-auto mt-12 max-w-3xl space-y-10">
             {overviewSections.map((section) => (
-              <OverviewSection key={section.id} section={section} />
+              <ContentSectionBlock key={section.id} section={section} />
             ))}
-            <OfficialCommunicationsSection />
+            <div id="official-communications" className="scroll-mt-24">
+              <OfficialCommunicationsSection />
+              <BackToContents />
+            </div>
           </div>
 
           <p className="mx-auto mt-12 max-w-3xl text-muted-foreground leading-relaxed">
