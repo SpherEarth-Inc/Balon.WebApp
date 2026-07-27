@@ -26,7 +26,7 @@ export function BackToContents({ className }: { className?: string }) {
         targetId={PAGE_CONTENTS_ID}
         className="text-sm text-brand-green hover:underline"
       >
-        Back to contents
+        Return to contents
       </ScrollToLink>
     </p>
   );
