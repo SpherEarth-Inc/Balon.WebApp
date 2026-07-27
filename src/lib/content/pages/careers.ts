@@ -69,9 +69,9 @@ export const careersContent: CareersContent = {
       id: "admissions-advisors",
       title: "Admissions Advisors",
       description:
-        "Authorized representatives who identify prospective players and families, guide families through the admissions process, and help build the academy's founding community.",
+        "Join our Founding Admissions Advisor Network as a trusted representative who identifies prospective players and families, guides families through the admissions process, and helps build the academy's founding community.",
       image: "/images/roles/admission-advisor.webp",
-      cta: createRoleApplyCta("Admissions Advisor"),
+      cta: { label: "Express Your Interest", href: "/admissions-advisor/" },
     },
     {
       id: "coaches",
@@ -134,9 +134,9 @@ export const careersContent: CareersContent = {
     paragraphs: [
       "Current openings will be posted as the academy prepares for launch and expands operations.",
       "Interested candidates are invited to submit an enquiry through the Enquiry Centre or contact us directly to express interest in future opportunities.",
-      "For Admissions Advisor opportunities, please visit the dedicated Become an Admissions Advisor page.",
+      "For Admissions Advisor opportunities, please visit the dedicated Founding Admissions Advisor Network page.",
     ],
-    cta: { label: "Become an Admissions Advisor", href: "/admissions-advisor/" },
+    cta: { label: "Join the Founding Advisor Network", href: "/admissions-advisor/" },
   },
   finalCta: {
     title: "Interested in Joining Our Team?",

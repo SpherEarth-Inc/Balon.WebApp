@@ -30,6 +30,16 @@ function DetailBlock({ section }: { section: ContentSection }) {
           {p}
         </p>
       ))}
+      {section.items && (
+        <ol className="mt-4 space-y-4">
+          {section.items.map((item) => (
+            <li key={item.title}>
+              <p className="font-semibold text-foreground">{item.title}</p>
+              <p className="mt-1 text-muted-foreground leading-relaxed">{item.description}</p>
+            </li>
+          ))}
+        </ol>
+      )}
       {section.bullets && (
         <ul className="mt-4 space-y-2">
           {section.bullets.map((b) => (
@@ -40,16 +50,57 @@ function DetailBlock({ section }: { section: ContentSection }) {
           ))}
         </ul>
       )}
+      {section.trailingParagraphs?.map((p, i) => (
+        <p key={`trail-${i}`} className="mt-4 text-muted-foreground leading-relaxed">
+          {p}
+        </p>
+      ))}
     </div>
   );
 }
 
 export function AdvisorPageContent() {
-  const { intro, formIntro, thankYou, role, responsibilities, qualifications, process, commissionNote } =
-    advisorContent;
+  const {
+    intro,
+    pathway,
+    whyJoin,
+    role,
+    responsibilities,
+    doNot,
+    qualifications,
+    qualities,
+    academyProvides,
+    flexibleOpportunity,
+    recognition,
+    attribution,
+    process,
+    professionalStandards,
+    safeguarding,
+    privacy,
+    closing,
+    formIntro,
+    thankYou,
+  } = advisorContent;
   const [step, setStep] = useState<AdvisorStep>("intro");
 
-  const detailSections = [role, responsibilities, qualifications, process, commissionNote];
+  const detailSections = [
+    pathway,
+    whyJoin,
+    role,
+    responsibilities,
+    doNot,
+    qualifications,
+    qualities,
+    academyProvides,
+    flexibleOpportunity,
+    recognition,
+    attribution,
+    process,
+    professionalStandards,
+    safeguarding,
+    privacy,
+    closing,
+  ];
 
   return (
     <section
@@ -75,7 +126,7 @@ export function AdvisorPageContent() {
                   href="/faq/?category=advisors"
                   className="inline-text-link"
                 >
-                  View the admissions advisor FAQ
+                  Review the Admissions Advisor FAQ
                 </AppLink>
                 .
               </p>
@@ -86,7 +137,7 @@ export function AdvisorPageContent() {
                   onClick={() => setStep("form")}
                   className="inline-text-link"
                 >
-                  Submit an advisor application
+                  Express your interest
                 </button>
                 .
               </p>
@@ -104,7 +155,7 @@ export function AdvisorPageContent() {
                   onClick={() => setStep("form")}
                   className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"
                 >
-                  Submit Advisor Application
+                  Express Your Interest
                 </Button>
               </div>
             </>
@@ -113,9 +164,11 @@ export function AdvisorPageContent() {
           {step === "form" && (
             <>
               <h2 className="text-2xl font-bold uppercase md:text-3xl">{formIntro.title}</h2>
-              {formIntro.description && (
-                <p className="mt-4 text-muted-foreground leading-relaxed">{formIntro.description}</p>
-              )}
+              {formIntro.paragraphs?.map((p, i) => (
+                <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
+                  {p}
+                </p>
+              ))}
               <div className="mt-8">
                 <AdvisorForm onSuccess={() => setStep("submitted")} />
               </div>

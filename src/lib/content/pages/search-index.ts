@@ -247,10 +247,13 @@ export const searchEntries: SearchEntry[] = [
     excerpt: advisorContent.meta.description,
     keywords: [
       "admissions advisor",
+      "founding admissions advisor",
+      "founding advisor",
       "representative",
       "recruitment",
       "commission",
       "become advisor",
+      "referral",
     ],
   },
   {

@@ -279,24 +279,64 @@ export const faqContent = {
       title: "Admissions Advisors",
       items: [
         {
+          question: "What is a SpherEarth Football Academy Admissions Advisor?",
+          answer:
+            "An Admissions Advisor is an individual authorized by SpherEarth Football Academy to introduce prospective players and families to the academy and guide them toward its official admissions channels. Advisors help create trusted introductions and explain approved information. They do not make admission decisions, guarantee outcomes, or replace the academy's internal admissions process.",
+        },
+        {
+          question: "What does an Admissions Advisor do?",
+          answer:
+            "An Advisor may identify families who could be well aligned with the academy, introduce the academy's programmes, answer general questions using approved information, and invite interested families to begin the formal admissions journey. All admissions assessments, decisions, offers, enrollment arrangements, and payments remain under the academy's authority.",
+        },
+        {
           question: "Can anyone become an Admissions Advisor?",
           answer:
-            "Advisors must be authorized by SpherEarth Football Academy following a review and onboarding process. Not all applicants will be approved.",
+            "No. All applicants are reviewed individually. Only candidates who complete the required selection, screening, documentation, training, and authorization process may represent the academy.",
+        },
+        {
+          question: "Is previous admissions or football-industry experience required?",
+          answer:
+            "Not necessarily. Experience in admissions, enrollment, education, student recruitment, youth football, community development, relationship management, premium client service, or business development may be valuable, but the academy also considers applicants who demonstrate strong communication, integrity, judgment, and an ability to build trusted relationships with families.",
+        },
+        {
+          question: "Is this a full-time position? Is an Advisor an employee?",
+          answer:
+            "The Admissions Advisor Network is a flexible, relationship-based opportunity. Authorization as an Advisor is not, by itself, an offer of employment. Unless the academy enters into a separate written employment agreement, an authorized Admissions Advisor is not an employee of SpherEarth Inc. or SpherEarth Football Academy.",
+        },
+        {
+          question: "Is the opportunity commission-based? When is compensation earned?",
+          answer:
+            "Admissions Advisors may be eligible for compensation for qualifying referrals under the terms of their written agreement. Compensation is earned only when the conditions in that agreement have been satisfied. An introduction, enquiry, application, consultation, assessment, or conditional admission does not necessarily create an entitlement to payment.",
         },
         {
           question: "Does an Advisor invitation guarantee admission for a player?",
           answer:
-            "No. An invitation to apply reflects an initial assessment of suitability. Admission remains subject to the academy's full review process.",
+            "No. An invitation from an Advisor only encourages a family to begin the formal admissions process. Every application is reviewed independently by the academy. No Advisor may guarantee admission, selection, scholarships, trials, team placement, playing time, or future advancement.",
         },
         {
-          question: "How do I verify an Admissions Advisor?",
+          question: "Can an Advisor assess a player, offer scholarships, or collect fees?",
           answer:
-            "Families can verify authorized representatives through our Trust & Safety Centre before sharing personal information or making any payment.",
+            "Not unless separately authorized in writing for assessment activity. Advisors cannot promise or negotiate scholarships, and must never collect tuition, deposits, or other academy payments through personal accounts or unofficial channels. Families must use official payment methods communicated directly by SpherEarth Football Academy.",
+        },
+        {
+          question: "How are referrals attributed?",
+          answer:
+            "Referral attribution is recorded through the academy's approved process. The family may be asked to identify the referring Advisor, and Advisors may also submit referral information through an approved system. A referral does not create ownership of the player, family, application, territory, or future academy relationship.",
+        },
+        {
+          question: "How do families verify an Admissions Advisor?",
+          answer:
+            "Families may contact SpherEarth Football Academy directly through official channels to confirm whether an individual is currently authorized. Verification requests may be sent to info@spherearth.ca or made by telephone at +1 647 936 2784. Families should verify any representative before sharing sensitive information, attending unofficial meetings, or making payments.",
         },
         {
           question: "How do I apply to become an Advisor?",
           answer:
-            "Submit an enquiry through the Enquiry Centre or contact our Admissions Team to express interest in joining the Advisor network.",
+            "Complete the official Admissions Advisor application form on the Become an Admissions Advisor page. Submitting the form is an expression of interest only and does not guarantee an interview, selection, training, authorization, or appointment.",
+        },
+        {
+          question: "What happens after I apply?",
+          answer:
+            "The academy will review your application. Selected candidates may be invited to a confidential introductory conversation and asked to provide additional information, references, documentation, or screening materials. You become authorized only after receiving formal written confirmation from the academy.",
         },
       ],
     },

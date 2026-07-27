@@ -39,7 +39,7 @@ export const mainNavigation: NavItem[] = [
       { label: "Overview", href: "/relations/" },
       { label: "Sponsorship", href: "/relations/sponsorship/" },
       { label: "Strategic Partnerships", href: "/relations/partnerships/" },
-      { label: "Become an Advisor", href: "/admissions-advisor/" },
+      { label: "Founding Admissions Advisors", href: "/admissions-advisor/" },
     ],
   },
   { label: "FAQ", href: "/faq/" },
@@ -77,7 +77,7 @@ export const footerNavigation = {
   partners: [
     { label: "Sponsorship", href: "/relations/sponsorship/" },
     { label: "Partnerships", href: "/relations/partnerships/" },
-    { label: "Become an Advisor", href: "/admissions-advisor/" },
+    { label: "Founding Admissions Advisors", href: "/admissions-advisor/" },
     { label: "Careers", href: "/careers/" },
   ],
   trust: [
