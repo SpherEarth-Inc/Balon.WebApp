@@ -56,7 +56,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   }, [active, slides, next]);
 
   return (
-    <section className="relative isolate flex min-h-[36vh] flex-col justify-end overflow-hidden bg-brand-navy text-white md:min-h-[42vh]">
+    <section className="relative isolate flex h-[36vh] flex-col justify-end overflow-hidden bg-brand-navy text-white md:h-[42vh]">
       {slides.map((slide, i) => (
         <div
           key={`${slide.tag}-bg-${i}`}
@@ -105,7 +105,9 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
               alt=""
               fill
               priority={i === 0}
-              className="object-cover"
+              className={cn(
+                slide.fit === "contain" ? "object-contain" : "object-cover object-top",
+              )}
               sizes="100vw"
             />
           ) : null}
@@ -122,11 +124,11 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 {slide.tag}
               </span>
             )}
-            <h1 className="mt-3 max-w-3xl text-3xl font-bold uppercase leading-[0.95] tracking-tight md:text-4xl lg:text-5xl">
+            <h1 className="mt-3 line-clamp-2 max-w-3xl text-3xl font-bold uppercase leading-[0.95] tracking-tight md:text-4xl lg:text-5xl">
               {slide.headline}
             </h1>
             {slide.description && (
-              <p className="mt-3 max-w-xl text-sm text-white/85 md:mt-4 md:text-base">
+              <p className="mt-3 line-clamp-2 max-w-xl text-sm text-white/85 md:mt-4 md:text-base">
                 {slide.description}
               </p>
             )}
