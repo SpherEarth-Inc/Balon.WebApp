@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { AppLink } from "@/components/ui/app-link";
 import { AdvisorForm } from "@/components/forms/advisor-form";
@@ -17,6 +17,16 @@ import { advisorContent } from "@/lib/content/pages/advisor";
 import { cn } from "@/lib/utils";
 
 type AdvisorStep = "intro" | "form" | "submitted";
+
+function scrollToAdvisorTop() {
+  document.getElementById("advisor-application")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+  if (typeof window !== "undefined" && window.location.hash) {
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+}
 
 export function AdvisorPageContent() {
   const {
@@ -41,6 +51,14 @@ export function AdvisorPageContent() {
     thankYou,
   } = advisorContent;
   const [step, setStep] = useState<AdvisorStep>("intro");
+
+  useEffect(() => {
+    if (step === "form" || step === "submitted") {
+      // After React replaces the long intro with the form, scroll to the top of that section.
+      const timer = window.setTimeout(() => scrollToAdvisorTop(), 0);
+      return () => window.clearTimeout(timer);
+    }
+  }, [step]);
 
   const detailSections = [
     pathway,

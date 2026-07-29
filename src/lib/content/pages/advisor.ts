@@ -344,11 +344,8 @@ export const advisorContent: AdvisorContent = {
     id: "advisor-application",
     title: "Apply to Join the Founding Admissions Advisor Network",
     paragraphs: [
-      "Thank you for your interest in representing SpherEarth Football Academy.",
-      "We are building a select network of trusted professionals and community leaders who can introduce families to the academy and support a respectful, accurate, and professional first step in the admissions journey.",
-      "Please complete the application below to tell us about your background, experience, professional relationships, community involvement, and interest in the opportunity.",
-      "Submitting this application is an expression of interest only. It does not create an offer, appointment, authorization, employment relationship, compensation entitlement, or obligation for either party.",
-      "Selected candidates may be contacted for a confidential introductory conversation and further assessment.",
+      "Thank you for your interest. Please complete the short application below about your background and community relationships.",
+      "This is an expression of interest only — not an offer or authorization. Selected candidates may be contacted for a confidential introductory conversation.",
     ],
   },
   thankYou: {
