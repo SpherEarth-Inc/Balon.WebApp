@@ -1,4 +1,5 @@
 import { PageHero } from "@/components/layout/page-hero";
+import { NewsListSection } from "@/components/news/news-list-section";
 import { newsContent } from "@/lib/content/pages/news";
 import { createMetadata } from "@/lib/content/site";
 
@@ -24,6 +25,7 @@ export default function NewsPage() {
         breadcrumb={breadcrumb}
         image={meta.heroImage}
       />
+      <NewsListSection />
     </>
   );
 }
