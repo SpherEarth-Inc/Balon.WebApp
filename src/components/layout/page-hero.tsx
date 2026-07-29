@@ -51,7 +51,7 @@ export function PageHero({
             </div>
           )}
           {description && (
-            <p className="mt-4 max-w-6xl text-lg text-white/80">{description}</p>
+            <p className="mt-4 max-w-5xl text-lg text-white/80">{description}</p>
           )}
         </div>
       </section>
@@ -70,7 +70,7 @@ export function PageHero({
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-6xl text-lg text-white/80">{description}</p>
+          <p className="mt-4 max-w-5xl text-lg text-white/80">{description}</p>
         )}
       </div>
     </section>

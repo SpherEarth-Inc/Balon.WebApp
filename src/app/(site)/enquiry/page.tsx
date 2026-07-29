@@ -85,7 +85,7 @@ export default function EnquiryPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-6xl space-y-10">
+          <div className="mx-auto mt-12 max-w-5xl space-y-10">
             <DetailBlock section={beforeYouContact} />
             <OfficialCommunicationsSection />
           </div>

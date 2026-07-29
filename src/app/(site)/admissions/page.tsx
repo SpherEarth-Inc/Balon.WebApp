@@ -87,7 +87,7 @@ export default function AdmissionsPage() {
             <PageContentsNav links={contentsLinks} />
           </div>
 
-          <div className="mx-auto mt-12 max-w-6xl space-y-10">
+          <div className="mx-auto mt-12 max-w-5xl space-y-10">
             {details.map((item) => (
               <ContentSectionBlock key={item.id} section={item} />
             ))}
@@ -97,7 +97,7 @@ export default function AdmissionsPage() {
             </div>
           </div>
 
-          <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
+          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap gap-3">
             <ButtonLink
               href="/admissions/apply/"
               className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"

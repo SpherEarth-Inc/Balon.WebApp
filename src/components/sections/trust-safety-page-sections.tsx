@@ -122,7 +122,7 @@ export function TrustSafetyPageSections() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl space-y-10">
+        <div className="mx-auto mt-12 max-w-5xl space-y-10">
           {detailSections.map((section) => (
             <ContentSectionBlock key={section.id ?? section.subtitle} section={section}>
               {section.cta && (

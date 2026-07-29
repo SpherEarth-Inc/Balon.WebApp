@@ -108,17 +108,17 @@
     @apply py-16 md:py-24;
   }
   .container-padding {
-    @apply px-4 sm:px-6 lg:px-8 xl:px-10;
+    @apply px-4 sm:px-6 lg:px-8 xl:px-12;
   }
 
-  /* Align page content with the header (max-w-[1600px]). */
+  /* Align page content with the header. */
   .site-width {
-    @apply mx-auto w-full max-w-[1600px];
+    @apply mx-auto w-full max-w-[1440px];
   }
 
-  /* Readable editorial column — wider than max-w-3xl so large screens are not sparse. */
+  /* Editorial column — roomy on large screens, with a bit of side gap on normal PCs. */
   .content-width {
-    @apply mx-auto w-full max-w-6xl;
+    @apply mx-auto w-full max-w-5xl;
   }
 
   .section-subheading {
@@ -158,5 +158,5 @@
 @utility container {
   width: 100%;
   margin-inline: auto;
-  max-width: 100rem; /* 1600px */
+  max-width: 90rem; /* 1440px */
 }

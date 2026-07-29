@@ -48,13 +48,13 @@ export default function SponsorshipPage() {
             <PageContentsNav links={contentsLinks} />
           </div>
 
-          <div className="mx-auto mt-12 max-w-6xl space-y-10">
+          <div className="mx-auto mt-12 max-w-5xl space-y-10">
             {sections.map((section) => (
               <ContentSectionBlock key={section.id} section={section} />
             ))}
           </div>
 
-          <p className="mx-auto mt-12 max-w-6xl text-muted-foreground leading-relaxed">
+          <p className="mx-auto mt-12 max-w-5xl text-muted-foreground leading-relaxed">
             Have questions about sponsorship?{" "}
             <AppLink
               href="/faq/?category=sponsors"
@@ -66,7 +66,7 @@ export default function SponsorshipPage() {
           </p>
 
           {intro.cta && (
-            <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
+            <div className="mx-auto mt-12 flex max-w-5xl flex-wrap gap-3">
               <ButtonLink
                 href={intro.cta.href}
                 className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"

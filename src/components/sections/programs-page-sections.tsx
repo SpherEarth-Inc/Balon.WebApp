@@ -58,7 +58,7 @@ export function ProgramsPageSections() {
           <PageContentsNav links={contentsLinks} />
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl space-y-10">
+        <div className="mx-auto mt-12 max-w-5xl space-y-10">
           {details.map((item) => (
             <ContentSectionBlock key={item.id} section={item} />
           ))}
@@ -68,7 +68,7 @@ export function ProgramsPageSections() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
+        <div className="mx-auto mt-12 flex max-w-5xl flex-wrap gap-3">
           <ButtonLink
             href="/programs/choose-program/"
             size="lg"

@@ -34,7 +34,7 @@ export function ProgramCards({
     <section className={cn("section-padding", headerStyle === "default" && "bg-muted/50")}>
       <div className="container mx-auto container-padding">
         {showHeader && headerStyle === "overview" && (
-          <div className="mb-12 max-w-6xl">
+          <div className="mb-12 max-w-5xl">
             <h2 className="text-3xl font-bold uppercase md:text-4xl">{title}</h2>
           </div>
         )}

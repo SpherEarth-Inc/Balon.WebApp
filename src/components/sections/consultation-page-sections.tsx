@@ -55,19 +55,19 @@ export function ConsultationPageSections() {
           <PageContentsNav links={contentsLinks} />
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl space-y-10">
+        <div className="mx-auto mt-12 max-w-5xl space-y-10">
           {details.map((item) => (
             <ContentSectionBlock key={item.id} section={item} />
           ))}
         </div>
 
-        <div id="calendly" className="mx-auto mt-12 max-w-6xl scroll-mt-24">
+        <div id="calendly" className="mx-auto mt-12 max-w-5xl scroll-mt-24">
           <CalendlyWidget />
           <BackToContents />
         </div>
 
         {intro.cta && (
-          <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
+          <div className="mx-auto mt-12 flex max-w-5xl flex-wrap gap-3">
             <ButtonLink
               href={intro.cta.href}
               size="lg"

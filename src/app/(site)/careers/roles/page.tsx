@@ -63,7 +63,7 @@ export default function CareersRolesPage() {
         </div>
 
         <div className="container mx-auto container-padding">
-          <div className="mx-auto mt-16 flex max-w-6xl flex-wrap gap-3">
+          <div className="mx-auto mt-16 flex max-w-5xl flex-wrap gap-3">
             <ButtonLink
               href="/careers/"
               variant="outline"

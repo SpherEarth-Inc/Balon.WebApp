@@ -115,12 +115,12 @@ export function CareersPageContent() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl space-y-10">
+        <div className="mx-auto mt-12 max-w-5xl space-y-10">
           <DetailBlock section={whyJoin} />
           <DetailBlock section={applicationNote} />
         </div>
 
-        <div className="mx-auto mt-12 max-w-6xl">
+        <div className="mx-auto mt-12 max-w-5xl">
           <div className="mt-8">
             <Button
               type="button"
