@@ -1,6 +1,7 @@
 import { CardWall, type CardWallItem } from "@/components/sections/card-wall";
 import { ContentBlock } from "@/components/sections/content-block";
 import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carousel";
+import { HomeLatestNews } from "@/components/news/home-latest-news";
 import { SectionHeader } from "@/components/sections/section-header";
 import { images } from "@/lib/content/assets";
 import { landingContent } from "@/lib/content/pages/landing";
@@ -97,6 +98,8 @@ export default function LandingPage() {
   return (
     <>
       <HeroCarousel slides={heroSlides} />
+
+      <HomeLatestNews />
 
       <section id="explore" className="scroll-mt-24 section-padding">
         <div className="container mx-auto container-padding">
