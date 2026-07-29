@@ -31,9 +31,10 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://academy.spherearth.ca' }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL || 'https://football.spherearth.ca' }}
           NEXT_PUBLIC_CALENDLY_URL: ${{ vars.NEXT_PUBLIC_CALENDLY_URL || '' }}
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
+          NEXT_PUBLIC_DOMAIN_API_URL: ${{ vars.NEXT_PUBLIC_DOMAIN_API_URL || 'https://balon-domain-api.spherearth.ca' }}
 
       # DreamHost uses SFTP (port 22), not plain FTP (port 21).
       # Rockae uses FTP on Hostinger; those credentials/protocol do not transfer here.
