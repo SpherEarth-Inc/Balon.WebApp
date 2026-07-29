@@ -30,7 +30,7 @@ export function TrustSafetyPageSections() {
   return (
     <section className="section-padding">
       <div className="container mx-auto container-padding">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           <h2 className="text-3xl font-bold uppercase md:text-4xl">{intro.title}</h2>
           {intro.paragraphs?.map((p, i) => (
             <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -122,7 +122,7 @@ export function TrustSafetyPageSections() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl space-y-10">
+        <div className="mx-auto mt-12 max-w-6xl space-y-10">
           {detailSections.map((section) => (
             <ContentSectionBlock key={section.id ?? section.subtitle} section={section}>
               {section.cta && (

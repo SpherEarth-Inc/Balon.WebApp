@@ -34,7 +34,7 @@ export function FaqCategories({ categories }: FaqCategoriesProps) {
   return (
     <section className="section-padding">
       <div className="container mx-auto container-padding">
-        <div className="mx-auto flex max-w-3xl flex-wrap gap-2">
+        <div className="mx-auto flex max-w-6xl flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setActiveCategory("all")}
@@ -64,7 +64,7 @@ export function FaqCategories({ categories }: FaqCategoriesProps) {
           ))}
         </div>
 
-        <div className="mx-auto mt-10 max-w-3xl space-y-10">
+        <div className="mx-auto mt-10 max-w-6xl space-y-10">
           {visibleCategories.map((category) => (
             <div key={category.id}>
               {activeCategory === "all" && (

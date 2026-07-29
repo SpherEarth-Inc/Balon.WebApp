@@ -31,7 +31,7 @@ export default function CareersPage() {
         fallback={
           <section className="section-padding">
             <div className="container mx-auto container-padding">
-              <div className="mx-auto flex max-w-3xl justify-center py-8">
+              <div className="mx-auto flex max-w-6xl justify-center py-8">
                 <FootballLoader label="Loading careers page" />
               </div>
             </div>

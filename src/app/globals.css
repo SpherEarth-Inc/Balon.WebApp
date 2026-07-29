@@ -108,7 +108,17 @@
     @apply py-16 md:py-24;
   }
   .container-padding {
-    @apply px-4 sm:px-6 lg:px-8;
+    @apply px-4 sm:px-6 lg:px-8 xl:px-10;
+  }
+
+  /* Align page content with the header (max-w-[1600px]). */
+  .site-width {
+    @apply mx-auto w-full max-w-[1600px];
+  }
+
+  /* Readable editorial column — wider than max-w-3xl so large screens are not sparse. */
+  .content-width {
+    @apply mx-auto w-full max-w-6xl;
   }
 
   .section-subheading {
@@ -141,4 +151,12 @@
   .animate-spherearth-spin {
     animation: spherearth-spin 1.1s linear infinite;
   }
+}
+
+/* Tailwind v4: bare `container` has no max-width by default in some setups;
+   pin it to the same site width as the header. */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 100rem; /* 1600px */
 }

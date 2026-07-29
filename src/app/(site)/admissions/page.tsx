@@ -77,7 +77,7 @@ export default function AdmissionsPage() {
 
       <section className="section-padding">
         <div className="container mx-auto container-padding">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto content-width">
             <h2 className="text-2xl font-bold uppercase md:text-3xl">{intro.title}</h2>
             {intro.paragraphs?.map((p, i) => (
               <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -87,7 +87,7 @@ export default function AdmissionsPage() {
             <PageContentsNav links={contentsLinks} />
           </div>
 
-          <div className="mx-auto mt-12 max-w-3xl space-y-10">
+          <div className="mx-auto mt-12 max-w-6xl space-y-10">
             {details.map((item) => (
               <ContentSectionBlock key={item.id} section={item} />
             ))}
@@ -97,7 +97,7 @@ export default function AdmissionsPage() {
             </div>
           </div>
 
-          <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">
+          <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
             <ButtonLink
               href="/admissions/apply/"
               className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"
@@ -115,7 +115,7 @@ export default function AdmissionsPage() {
         steps={admissionsContent.steps}
       />
       <div className="container mx-auto container-padding pb-8">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           <BackToContents />
         </div>
       </div>

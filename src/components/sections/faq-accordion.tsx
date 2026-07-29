@@ -22,7 +22,7 @@ export function FaqAccordion({ title, subtitle, items }: FaqAccordionProps) {
             {subtitle && <p className="mt-3 text-muted-foreground">{subtitle}</p>}
           </div>
         )}
-        <Accordion multiple={false} className="mx-auto max-w-3xl">
+        <Accordion multiple={false} className="mx-auto content-width">
           {items.map((item, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
               <AccordionTrigger className="text-left font-semibold">

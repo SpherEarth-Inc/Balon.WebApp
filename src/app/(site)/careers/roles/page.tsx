@@ -47,7 +47,7 @@ export default function CareersRolesPage() {
                 imageContainerClassName="mx-auto aspect-[3/4] w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px]"
               />
             ) : (
-              <div key={role.id} className="mx-auto max-w-3xl">
+              <div key={role.id} className="mx-auto content-width">
                 <h2 className="text-3xl font-bold uppercase md:text-4xl">{role.title}</h2>
                 <p className="mt-4 text-muted-foreground leading-relaxed">{role.description}</p>
                 <ButtonLink
@@ -63,7 +63,7 @@ export default function CareersRolesPage() {
         </div>
 
         <div className="container mx-auto container-padding">
-          <div className="mx-auto mt-16 flex max-w-3xl flex-wrap gap-3">
+          <div className="mx-auto mt-16 flex max-w-6xl flex-wrap gap-3">
             <ButtonLink
               href="/careers/"
               variant="outline"

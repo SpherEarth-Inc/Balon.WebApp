@@ -54,7 +54,7 @@ export default function TrustAndSafetyPage() {
       </section>
       <ContentBlock section={trustSafetyContent.protectingYourself} />
       <div className="container mx-auto container-padding pb-8">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           <BackToContents />
         </div>
       </div>

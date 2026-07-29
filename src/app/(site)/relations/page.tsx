@@ -35,7 +35,7 @@ export default function RelationsPage() {
 
       <section className="section-padding">
         <div className="container mx-auto container-padding">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto content-width">
             <h2 className="text-2xl font-bold uppercase md:text-3xl">{intro.title}</h2>
             {intro.paragraphs?.map((p, i) => (
               <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -65,13 +65,13 @@ export default function RelationsPage() {
             <PageContentsNav links={contentsLinks} />
           </div>
 
-          <div className="mx-auto mt-12 max-w-3xl space-y-10">
+          <div className="mx-auto mt-12 max-w-6xl space-y-10">
             {sections.map((section) => (
               <ContentSectionBlock key={section.id} section={section} />
             ))}
           </div>
 
-          <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">
+          <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
             <ButtonLink
               href="/relations/sponsorship/"
               className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"

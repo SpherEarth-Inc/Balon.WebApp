@@ -29,7 +29,7 @@ export default function FaqPage() {
         fallback={
           <section className="section-padding">
             <div className="container mx-auto container-padding">
-              <div className="mx-auto max-w-3xl text-muted-foreground">Loading FAQs...</div>
+              <div className="mx-auto content-width text-muted-foreground">Loading FAQs...</div>
             </div>
           </section>
         }

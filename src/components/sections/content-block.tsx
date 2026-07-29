@@ -27,7 +27,7 @@ export function ContentBlock({
         <div
           className={cn(
             "grid items-center gap-10 lg:gap-16",
-            hasImage ? "lg:grid-cols-2" : "max-w-3xl mx-auto"
+            hasImage ? "lg:grid-cols-2" : "content-width"
           )}
         >
           <div className={cn(hasImage && imageRight && "lg:order-2")}>

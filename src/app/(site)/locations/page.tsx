@@ -37,7 +37,7 @@ export default function LocationsPage() {
             </p>
             <h2 className="text-3xl font-bold uppercase md:text-4xl">{gta.title}</h2>
             {gta.description && (
-              <p className="mx-auto mt-4 max-w-3xl text-muted-foreground">{gta.description}</p>
+              <p className="mx-auto mt-4 max-w-6xl text-muted-foreground">{gta.description}</p>
             )}
           </div>
           <div className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -51,7 +51,7 @@ export default function LocationsPage() {
             ))}
           </div>
           {gta.paragraphs?.map((p, i) => (
-            <p key={i} className="mx-auto mt-8 max-w-3xl text-center text-muted-foreground">
+            <p key={i} className="mx-auto mt-8 max-w-6xl text-center text-muted-foreground">
               {p}
             </p>
           ))}

@@ -69,7 +69,7 @@ export function CareersPageContent() {
     return (
       <section id="careers-application" className="scroll-mt-24 bg-muted/30 py-6 md:py-10">
         <div className="container mx-auto container-padding">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto content-width">
             <Suspense fallback={<FootballLoader className="py-4" label="Loading form" />}>
               <CareersForm />
             </Suspense>
@@ -82,7 +82,7 @@ export function CareersPageContent() {
   return (
     <section id="careers-intro" className="section-padding">
       <div className="container mx-auto container-padding">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           <h2 className="text-3xl font-bold uppercase md:text-4xl">{intro.title}</h2>
           {intro.paragraphs?.map((p, i) => (
             <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -115,12 +115,12 @@ export function CareersPageContent() {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl space-y-10">
+        <div className="mx-auto mt-12 max-w-6xl space-y-10">
           <DetailBlock section={whyJoin} />
           <DetailBlock section={applicationNote} />
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl">
+        <div className="mx-auto mt-12 max-w-6xl">
           <div className="mt-8">
             <Button
               type="button"

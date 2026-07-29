@@ -30,7 +30,7 @@ export function ApplyPageContent() {
       )}
     >
       <div className="container mx-auto container-padding">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           {step === "intro" && (
             <>
               <h2 className="text-3xl font-bold uppercase md:text-4xl">

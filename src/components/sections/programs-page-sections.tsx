@@ -28,7 +28,7 @@ export function ProgramsPageSections() {
   return (
     <section className="section-padding">
       <div className="container mx-auto container-padding">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto content-width">
           <h2 className="text-3xl font-bold uppercase md:text-4xl">{intro.title}</h2>
           {intro.paragraphs?.map((p, i) => (
             <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -58,7 +58,7 @@ export function ProgramsPageSections() {
           <PageContentsNav links={contentsLinks} />
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl space-y-10">
+        <div className="mx-auto mt-12 max-w-6xl space-y-10">
           {details.map((item) => (
             <ContentSectionBlock key={item.id} section={item} />
           ))}
@@ -68,7 +68,7 @@ export function ProgramsPageSections() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">
+        <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
           <ButtonLink
             href="/programs/choose-program/"
             size="lg"

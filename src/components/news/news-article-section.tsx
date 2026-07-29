@@ -113,7 +113,7 @@ export function NewsArticleSection() {
 
       <article className="section-padding">
         <div className="container mx-auto container-padding">
-          <div className="mx-auto max-w-3xl space-y-6">
+          <div className="mx-auto content-width space-y-6">
             <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
               <span className="inline-flex bg-red-600 px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-widest text-white">
                 {category}

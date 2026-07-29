@@ -48,7 +48,7 @@ export default function ScholarshipsPage() {
 
       <section className="section-padding">
         <div className="container mx-auto container-padding">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto content-width">
             <h2 className="text-2xl font-bold uppercase md:text-3xl">{intro.title}</h2>
             {intro.paragraphs?.map((p, i) => (
               <p key={i} className="mt-4 text-muted-foreground leading-relaxed">
@@ -58,7 +58,7 @@ export default function ScholarshipsPage() {
             <PageContentsNav links={contentsLinks} />
           </div>
 
-          <div className="mx-auto mt-12 max-w-3xl space-y-10">
+          <div className="mx-auto mt-12 max-w-6xl space-y-10">
             {overviewSections.map((section) => (
               <ContentSectionBlock key={section.id} section={section} />
             ))}
@@ -68,7 +68,7 @@ export default function ScholarshipsPage() {
             </div>
           </div>
 
-          <p className="mx-auto mt-12 max-w-3xl text-muted-foreground leading-relaxed">
+          <p className="mx-auto mt-12 max-w-6xl text-muted-foreground leading-relaxed">
             Have questions about scholarships?{" "}
             <AppLink
               href="/faq/?category=scholarships"
@@ -80,7 +80,7 @@ export default function ScholarshipsPage() {
           </p>
 
           {intro.cta && (
-            <div className="mx-auto mt-12 flex max-w-3xl flex-wrap gap-3">
+            <div className="mx-auto mt-12 flex max-w-6xl flex-wrap gap-3">
               <ButtonLink
                 href={intro.cta.href}
                 className="h-12 w-full rounded-none bg-brand-green px-8 text-base hover:bg-brand-green/90 sm:w-auto md:h-14 md:px-10 md:text-lg"

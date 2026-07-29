@@ -102,7 +102,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full">
       <div className="border-b bg-white text-foreground">
-        <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-3 container-padding py-3 xl:gap-4">
+        <div className="site-width flex items-center justify-between gap-3 container-padding py-3 xl:gap-4">
           <AppLink href="/" className="flex shrink-0 items-center gap-3">
             <Image
               src={asset(images.logo)}
