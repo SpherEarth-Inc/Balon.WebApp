@@ -1,3 +1,4 @@
+import { images } from "../assets";
 import type { ContentSection, PageMeta } from "@/types/content";
 
 export interface LegalPage {
@@ -20,6 +21,7 @@ export const legalPages: LegalPages = {
       description:
         "SpherEarth Football Academy Privacy Policy. How we collect, use, store, and protect personal information.",
       path: "/privacy/",
+      heroImage: images.trustSafetyHero,
     },
     lastUpdated: "2026",
     sections: [
@@ -99,6 +101,7 @@ export const legalPages: LegalPages = {
       description:
         "Terms and conditions governing use of the SpherEarth Football Academy website and services.",
       path: "/terms/",
+      heroImage: images.faqHero,
     },
     lastUpdated: "2026",
     sections: [
@@ -169,6 +172,7 @@ export const legalPages: LegalPages = {
       description:
         "SpherEarth Football Academy safeguarding and child protection commitment. Protecting the well-being of every athlete.",
       path: "/safeguarding/",
+      heroImage: images.trustSafetyHero,
     },
     lastUpdated: "2026",
     sections: [
@@ -225,6 +229,7 @@ export const legalPages: LegalPages = {
       description:
         "SpherEarth Football Academy accessibility statement. Our commitment to accessible digital experiences under AODA.",
       path: "/accessibility/",
+      heroImage: images.enquiryHero,
     },
     lastUpdated: "2026",
     sections: [

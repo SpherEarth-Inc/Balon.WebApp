@@ -111,9 +111,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <HomeLatestNews />
-
       <ContentBlock section={landingContent.globalVision} imageRight imageClassName="object-contain" />
+
+      <HomeLatestNews />
     </>
   );
 }

@@ -90,24 +90,28 @@ export function SiteFooter() {
             </div>
           </div>
         </div>
-
-        <div className="mt-12 flex flex-wrap gap-4 border-t border-border pt-8">
-          {footerNavigation.legal.map((link) => (
-            <AppLink
-              key={link.href}
-              href={link.href}
-              className="text-xs text-muted-foreground transition-colors hover:text-brand-green"
-            >
-              {link.label}
-            </AppLink>
-          ))}
-        </div>
       </div>
 
       <div className="bg-brand-green py-4">
-        <p className="container mx-auto container-padding text-center text-sm font-medium text-white">
-          &copy; {year} {siteConfig.parentCompany} All Rights Reserved.
-        </p>
+        <div className="container mx-auto container-padding flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+          <p className="text-sm font-medium text-white">
+            &copy; {year} {siteConfig.parentCompany} All Rights Reserved.
+          </p>
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2"
+          >
+            {footerNavigation.legal.map((link) => (
+              <AppLink
+                key={link.href}
+                href={link.href}
+                className="text-xs font-medium text-white/90 transition-colors hover:text-white"
+              >
+                {link.label}
+              </AppLink>
+            ))}
+          </nav>
+        </div>
       </div>
     </footer>
   );

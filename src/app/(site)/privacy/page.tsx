@@ -19,7 +19,12 @@ const breadcrumb = [
 export default function PrivacyPage() {
   return (
     <>
-      <PageHero title={page.meta.title} breadcrumb={breadcrumb} />
+      <PageHero
+        title={page.meta.title}
+        description={page.meta.description}
+        breadcrumb={breadcrumb}
+        image={page.meta.heroImage}
+      />
       <LegalPageLayout page={page} />
     </>
   );
