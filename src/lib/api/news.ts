@@ -32,6 +32,13 @@ export type NewsArticle = NewsListItem & {
   content: TipTapDoc;
 };
 
+export type PaginatedResponse<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
 function apiErrorMessage(status: number, body: unknown): string {
   if (body && typeof body === "object") {
     const record = body as Record<string, unknown>;
@@ -60,8 +67,14 @@ async function newsRequest<T>(path: string): Promise<T> {
   return body as T;
 }
 
-export function listNews() {
-  return newsRequest<NewsListItem[]>("/api/news/");
+export function listNews(params?: { page?: number; page_size?: number }) {
+  const search = new URLSearchParams();
+  if (params?.page) search.set("page", String(params.page));
+  if (params?.page_size) search.set("page_size", String(params.page_size));
+  const qs = search.toString();
+  return newsRequest<PaginatedResponse<NewsListItem>>(
+    `/api/news/${qs ? `?${qs}` : ""}`,
+  );
 }
 
 export function getNews(slug: string) {
