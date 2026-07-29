@@ -1,8 +1,9 @@
 import { CardWall, type CardWallItem } from "@/components/sections/card-wall";
 import { ContentBlock } from "@/components/sections/content-block";
-import type { HeroSlide } from "@/components/sections/hero-carousel";
-import { HomeHero } from "@/components/news/home-hero";
+import { HeroCarousel, type HeroSlide } from "@/components/sections/hero-carousel";
+import { HomeLatestNews } from "@/components/news/home-latest-news";
 import { SectionHeader } from "@/components/sections/section-header";
+import { images } from "@/lib/content/assets";
 import { landingContent } from "@/lib/content/pages/landing";
 import { createMetadata } from "@/lib/content/site";
 
@@ -12,8 +13,7 @@ export const metadata = createMetadata({
   path: landingContent.meta.path,
 });
 
-/** Opening brand slide only — latest news appends as following hero slides. */
-const brandSlides: HeroSlide[] = [
+const heroSlides: HeroSlide[] = [
   {
     tag: "",
     headline: landingContent.hero.headline,
@@ -24,6 +24,31 @@ const brandSlides: HeroSlide[] = [
       { label: "Explore", href: "#explore" },
       { label: "Apply Now", href: "/admissions/apply/" },
     ],
+  },
+  {
+    tag: "Programs",
+    headline: "A Pathway For Every Player",
+    description:
+      "Founding, Premier and Signature programs built around elite coaching and long-term player development.",
+    video: "/images/home-hero/programs.mp4",
+    image: images.homepageHero,
+    ctas: [{ label: "View Programs", href: "/programs/" }],
+  },
+  {
+    tag: "Sponsorship",
+    headline: "Invest In The Next Generation",
+    description:
+      "Partner with us to help talented young athletes access life-changing opportunities.",
+    video: "/images/home-hero/sponsor.mp4",
+    ctas: [{ label: "Become a Sponsor", href: "/relations/sponsorship/" }],
+  },
+  {
+    tag: "Partnerships",
+    headline: "Build The Future With Us",
+    description:
+      "Strategic partnerships that connect players to global development opportunities.",
+    video: "/images/home-hero/partner.mp4",
+    ctas: [{ label: "Partner With Us", href: "/relations/partnerships/" }],
   },
 ];
 
@@ -72,7 +97,9 @@ const exploreCards: CardWallItem[] = [
 export default function LandingPage() {
   return (
     <>
-      <HomeHero brandSlides={brandSlides} />
+      <HeroCarousel slides={heroSlides} />
+
+      <HomeLatestNews />
 
       <section id="explore" className="scroll-mt-24 section-padding">
         <div className="container mx-auto container-padding">
