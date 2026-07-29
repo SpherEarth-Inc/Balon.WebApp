@@ -99,8 +99,6 @@ export default function LandingPage() {
     <>
       <HeroCarousel slides={heroSlides} />
 
-      <HomeLatestNews />
-
       <section id="explore" className="scroll-mt-24 section-padding">
         <div className="container mx-auto container-padding">
           <SectionHeader
@@ -111,6 +109,8 @@ export default function LandingPage() {
           <CardWall items={exploreCards} />
         </div>
       </section>
+
+      <HomeLatestNews />
 
       <ContentBlock section={landingContent.globalVision} imageRight imageClassName="object-contain" />
     </>
