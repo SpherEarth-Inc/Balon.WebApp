@@ -24,7 +24,6 @@ jobs:
           node-version: 24
           cache: npm
 
-      # Clean install so every build reflects current code (no stale cache)
       - name: Install dependencies
         run: npm ci
 
@@ -36,16 +35,10 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH || '' }}
           NEXT_PUBLIC_DOMAIN_API_URL: ${{ vars.NEXT_PUBLIC_DOMAIN_API_URL || 'https://balon-domain-api.spherearth.ca' }}
 
-      # DreamHost uses SFTP (port 22), not plain FTP (port 21).
-      # Rockae uses FTP on Hostinger; those credentials/protocol do not transfer here.
-      # lftp mirror --delete syncs out/ like FTP-Deploy-Action: upload changes + remove stale files.
-      # GitHub secrets — Settings → Secrets and variables → Actions:
-      #   DREAMHOST_SFTP_SERVER      → hostname only (no sftp:// prefix)
-      #   DREAMHOST_SFTP_USERNAME    → DreamHost SFTP user
-      #   DREAMHOST_SFTP_PASSWORD    → DreamHost SFTP password
-      #   DREAMHOST_SFTP_FOLDER_NAME → domain folder only (not a full path)
-      #                                e.g. football.spherearth.ca
-      #                                Deploys to /home/<username>/<folder>/
+      # DreamHost SFTP → deploy into the SFTP user's home folder:
+      #   /home/<DREAMHOST_SFTP_USERNAME>/
+      # (Point the football.spherearth.ca docroot at that user home in DreamHost.)
+      # Secrets: DREAMHOST_SFTP_SERVER, DREAMHOST_SFTP_USERNAME, DREAMHOST_SFTP_PASSWORD
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
@@ -54,15 +47,12 @@ jobs:
           SFTP_SERVER: ${{ secrets.DREAMHOST_SFTP_SERVER }}
           SFTP_USERNAME: ${{ secrets.DREAMHOST_SFTP_USERNAME }}
           SFTP_PASSWORD: ${{ secrets.DREAMHOST_SFTP_PASSWORD }}
-          SFTP_FOLDER_NAME: ${{ secrets.DREAMHOST_SFTP_FOLDER_NAME }}
         run: |
-          if [ -z "$SFTP_FOLDER_NAME" ]; then
-            echo "Missing secret DREAMHOST_SFTP_FOLDER_NAME (e.g. football.spherearth.ca)"
+          if [ -z "$SFTP_USERNAME" ]; then
+            echo "Missing secret DREAMHOST_SFTP_USERNAME"
             exit 1
           fi
-          FOLDER="${SFTP_FOLDER_NAME#/}"
-          FOLDER="${FOLDER%/}"
-          REMOTE="/home/${SFTP_USERNAME}/${FOLDER}/"
+          REMOTE="/home/${SFTP_USERNAME}/"
           echo "Deploying to ${REMOTE}"
           lftp -u "$SFTP_USERNAME","$SFTP_PASSWORD" "sftp://$SFTP_SERVER" <<EOF
           set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=no"
