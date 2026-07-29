@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleCheck } from "lucide-react";
 import { ApplyForm } from "@/components/forms/apply-form";
 import { Button } from "@/components/ui/button";
+import { scrollSectionIntoView } from "@/components/ui/scroll-to-link";
 import { applyContent } from "@/lib/content/pages/apply";
 import { cn } from "@/lib/utils";
 
@@ -13,9 +14,18 @@ export function ApplyPageContent() {
   const { intro, beforeYouBegin, thankYou } = applyContent;
   const [step, setStep] = useState<ApplyStep>("intro");
 
+  useEffect(() => {
+    if (step === "form" || step === "submitted") {
+      const timer = window.setTimeout(() => scrollSectionIntoView("admissions-apply"), 0);
+      return () => window.clearTimeout(timer);
+    }
+  }, [step]);
+
   return (
     <section
+      id="admissions-apply"
       className={cn(
+        "scroll-mt-24",
         step === "form" ? "bg-muted/30 py-6 md:py-10" : "section-padding"
       )}
     >

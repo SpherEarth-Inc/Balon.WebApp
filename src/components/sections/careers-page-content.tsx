@@ -6,6 +6,7 @@ import { AppLink } from "@/components/ui/app-link";
 import { Button } from "@/components/ui/button";
 import { CareersForm } from "@/components/forms/careers-form";
 import { FootballLoader } from "@/components/ui/football-loader";
+import { scrollSectionIntoView } from "@/components/ui/scroll-to-link";
 import { careersContent } from "@/lib/content/pages/careers";
 import type { ContentSection } from "@/types/content";
 import { cn } from "@/lib/utils";
@@ -55,6 +56,13 @@ export function CareersPageContent() {
     }
   }, [roleParam]);
 
+  useEffect(() => {
+    if (step === "form") {
+      const timer = window.setTimeout(() => scrollSectionIntoView("careers-application"), 0);
+      return () => window.clearTimeout(timer);
+    }
+  }, [step]);
+
   const { intro, whyJoin, applicationNote } = careersContent;
 
   if (step === "form") {
@@ -72,7 +80,7 @@ export function CareersPageContent() {
   }
 
   return (
-    <section className="section-padding">
+    <section id="careers-intro" className="section-padding">
       <div className="container mx-auto container-padding">
         <div className="mx-auto max-w-3xl">
           <h2 className="text-3xl font-bold uppercase md:text-4xl">{intro.title}</h2>

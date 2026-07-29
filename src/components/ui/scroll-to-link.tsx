@@ -11,6 +11,17 @@ interface ScrollToLinkProps {
   onNavigate?: () => void;
 }
 
+/** Scroll to a section after intro → form step changes (avoids landing on the footer). */
+export function scrollSectionIntoView(targetId: string) {
+  document.getElementById(targetId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+  if (typeof window !== "undefined" && window.location.hash) {
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+}
+
 function scrollToTarget(targetId: string, onNavigate?: () => void) {
   if (onNavigate) {
     onNavigate();
