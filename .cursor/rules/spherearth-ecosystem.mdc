@@ -1,0 +1,31 @@
+---
+description: SpherEarth/Balon multi-repo map — which project to edit
+alwaysApply: true
+---
+
+# SpherEarth / Balon ecosystem
+
+Full map: [`C:\SpherEarthCanada\SPHEREARTH.md`](C:\SpherEarthCanada\SPHEREARTH.md) — **read it** before cross-repo or schema work.
+
+## Repos (under `C:\SpherEarthCanada`)
+
+| Repo | Own |
+|------|-----|
+| `Balon.Software.Models` | Shared Django models only (`core.*`) |
+| `Balon.Model.Migrations` | **Only** place to makemigrate/migrate |
+| `Balon.Admin.API` | Staff JWT API (news/media/staff/domain-invites; form **GET** only) |
+| `Balon.Domain.API` | Domain JWT (invite-only) + **public** form upload/submit |
+| `Balon.WebApp` | Public academy site → Domain forms API |
+| `Balon.Admin.WebApp` | Staff UI → Admin.API |
+| `Notification.Service` | Email gateway |
+| `Terra.Corporate.Website` | Corporate site (not academy) |
+| `Terra.Requirements` | Specs/docs |
+
+Same MySQL `balon_core` for Admin + Domain + Migrations. Pin models git SHA in both APIs’ `requirements.txt`.
+
+## Boundaries
+
+- Schema → Models → Migrations → pin SHA in Admin **and** Domain
+- Public forms → Domain (+ WebApp client); staff list forms → Admin
+- No migrations from API repos; no public signup on Domain
+- CORS: Domain `FRONTEND_URL(S)` = WebApp origin; WebApp `NEXT_PUBLIC_DOMAIN_API_URL` = Domain base
