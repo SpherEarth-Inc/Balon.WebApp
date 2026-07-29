@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { formFieldClass, formTextareaClass } from "@/components/forms/form-field-styles";
+import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 import { enquiryDepartments } from "@/lib/content/navigation";
 
@@ -47,11 +48,20 @@ export function EnquiryForm() {
     defaultValues: { contactMethod: "Email", department: enquiryDepartments[0] },
   });
 
-  function onSubmit() {
-    toast.success("Enquiry sent!", {
-      description: "Our team will respond through official SpherEarth channels.",
-    });
-    reset();
+  async function onSubmit(data: EnquiryFormData) {
+    try {
+      await submitForm(FORM_SLUGS.enquiry, { data });
+      toast.success("Enquiry sent!", {
+        description: "Our team will respond through official SpherEarth channels.",
+      });
+      reset();
+    } catch (error) {
+      if (isFormsNotConfigured(error)) {
+        toast.error("Form submission is not configured yet.");
+        return;
+      }
+      toast.error(error instanceof Error ? error.message : "Unable to send enquiry.");
+    }
   }
 
   return (

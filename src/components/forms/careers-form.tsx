@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 
 const careersSchema = z.object({
@@ -63,11 +64,21 @@ export function CareersForm() {
 
   const selectedRole = watch("role");
 
-  function onSubmit() {
-    toast.success("Application received!", {
-      description: "Our team will review your submission and respond if there is a suitable opportunity.",
-    });
-    reset();
+  async function onSubmit(data: CareersFormData) {
+    try {
+      await submitForm(FORM_SLUGS.careers, { data });
+      toast.success("Application received!", {
+        description:
+          "Our team will review your submission and respond if there is a suitable opportunity.",
+      });
+      reset();
+    } catch (error) {
+      if (isFormsNotConfigured(error)) {
+        toast.error("Form submission is not configured yet.");
+        return;
+      }
+      toast.error(error instanceof Error ? error.message : "Unable to submit application.");
+    }
   }
 
   return (

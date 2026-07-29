@@ -19,6 +19,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { trainingLocations } from "@/lib/content/navigation";
 import { formFieldClass, formTextareaClass } from "@/components/forms/form-field-styles";
+import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 
 const applySchema = z.object({
   parentName: z.string().min(2, "Required"),
@@ -79,15 +80,24 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
     },
   });
 
-  function onSubmit() {
-    toast.success("Application submitted!", {
-      description: "Our Admissions Team will contact you through verified channels.",
-    });
-    if (onSuccess) {
-      onSuccess();
-      return;
+  async function onSubmit(data: ApplyFormData) {
+    try {
+      await submitForm(FORM_SLUGS.admissionsApply, { data });
+      toast.success("Application submitted!", {
+        description: "Our Admissions Team will contact you through verified channels.",
+      });
+      if (onSuccess) {
+        onSuccess();
+        return;
+      }
+      router.push("/admissions/apply/thank-you/");
+    } catch (error) {
+      if (isFormsNotConfigured(error)) {
+        toast.error("Form submission is not configured yet.");
+        return;
+      }
+      toast.error(error instanceof Error ? error.message : "Unable to submit application.");
     }
-    router.push("/admissions/apply/thank-you/");
   }
 
   return (

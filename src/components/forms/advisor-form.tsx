@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 
 const yesNo = ["Yes", "No"] as const;
@@ -242,14 +243,23 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
     setStepIndex((i) => Math.max(i - 1, 0));
   }
 
-  function onSubmit() {
-    toast.success("Expression of interest received!", {
-      description:
-        "Our team will review your application. Selected candidates may be contacted for a confidential introductory conversation.",
-    });
-    reset();
-    setStepIndex(0);
-    onSuccess?.();
+  async function onSubmit(data: AdvisorFormData) {
+    try {
+      await submitForm(FORM_SLUGS.admissionsAdvisor, { data });
+      toast.success("Expression of interest received!", {
+        description:
+          "Our team will review your application. Selected candidates may be contacted for a confidential introductory conversation.",
+      });
+      reset();
+      setStepIndex(0);
+      onSuccess?.();
+    } catch (error) {
+      if (isFormsNotConfigured(error)) {
+        toast.error("Form submission is not configured yet.");
+        return;
+      }
+      toast.error(error instanceof Error ? error.message : "Unable to submit application.");
+    }
   }
 
   return (
