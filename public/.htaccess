@@ -25,6 +25,8 @@ DirectoryIndex index.html
 
   # Dynamic news articles: serve the static-export placeholder "_" page.
   # Client React still reads the real slug from the browser URL.
+  # Skip existing files so /news/ (news/index.html) is not stolen into news/_/.
+  RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^news/[^/]+/?$ /news/_/index.html [L]
 
   # Serve folder index.html for clean URLs
@@ -33,4 +35,4 @@ DirectoryIndex index.html
   RewriteRule ^(.+?)/?$ $1/index.html [L]
 </IfModule>
 
-# Redeploy bump 2026-07-29-news
+# Redeploy bump 2026-07-29-news-rewrite-fix
