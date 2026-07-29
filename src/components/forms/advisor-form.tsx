@@ -6,7 +6,12 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { formFieldClass, formTextareaClass } from "@/components/forms/form-field-styles";
+import {
+  formCheckboxClass,
+  formFieldClass,
+  formTextareaClass,
+} from "@/components/forms/form-field-styles";
+import { RequiredMark } from "@/components/forms/required-mark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -97,10 +102,10 @@ const advisorSchema = z.object({
   alreadyReferredDetails: z.string().optional(),
   heardAbout: z.string().min(1, "Required"),
   additionalInfo: z.string().optional(),
-  consentAccurate: z.literal(true, { message: "Required" }),
-  consentNoRepresent: z.literal(true, { message: "Required" }),
-  consentContact: z.literal(true, { message: "Required" }),
-  consentPrivacy: z.literal(true, { message: "Required" }),
+  consentAccurate: z.literal(true, { message: "" }),
+  consentNoRepresent: z.literal(true, { message: "" }),
+  consentContact: z.literal(true, { message: "" }),
+  consentPrivacy: z.literal(true, { message: "" }),
 });
 
 type AdvisorFormData = z.infer<typeof advisorSchema>;
@@ -195,7 +200,7 @@ interface AdvisorFormProps {
 }
 
 function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
+  if (!message?.trim()) return null;
   return <p className="text-xs text-destructive">{message}</p>;
 }
 
@@ -286,7 +291,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
         <fieldset className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="min-w-0">
-              <Label htmlFor="fullLegalName">Full Legal Name *</Label>
+              <Label htmlFor="fullLegalName">Full Legal Name<RequiredMark /></Label>
               <Input id="fullLegalName" {...register("fullLegalName")} className={formFieldClass} />
               <FieldError message={errors.fullLegalName?.message} />
             </div>
@@ -295,27 +300,27 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               <Input id="preferredName" {...register("preferredName")} className={formFieldClass} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email">Email Address<RequiredMark /></Label>
               <Input id="email" type="email" {...register("email")} className={formFieldClass} />
               <FieldError message={errors.email?.message} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="phone">Telephone Number *</Label>
+              <Label htmlFor="phone">Telephone Number<RequiredMark /></Label>
               <Input id="phone" {...register("phone")} className={formFieldClass} />
               <FieldError message={errors.phone?.message} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="city">City or Municipality *</Label>
+              <Label htmlFor="city">City or Municipality<RequiredMark /></Label>
               <Input id="city" {...register("city")} className={formFieldClass} />
               <FieldError message={errors.city?.message} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="province">Province *</Label>
+              <Label htmlFor="province">Province<RequiredMark /></Label>
               <Input id="province" {...register("province")} className={formFieldClass} />
               <FieldError message={errors.province?.message} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="postalCode">Postal Code *</Label>
+              <Label htmlFor="postalCode">Postal Code<RequiredMark /></Label>
               <Input id="postalCode" {...register("postalCode")} className={formFieldClass} />
               <FieldError message={errors.postalCode?.message} />
             </div>
@@ -324,12 +329,12 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               <Input id="linkedIn" {...register("linkedIn")} className={formFieldClass} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="jobTitle">Current Job Title or Professional Role *</Label>
+              <Label htmlFor="jobTitle">Current Job Title or Professional Role<RequiredMark /></Label>
               <Input id="jobTitle" {...register("jobTitle")} className={formFieldClass} />
               <FieldError message={errors.jobTitle?.message} />
             </div>
             <div className="min-w-0">
-              <Label htmlFor="employer">Current Employer or Organization *</Label>
+              <Label htmlFor="employer">Current Employer or Organization<RequiredMark /></Label>
               <Input id="employer" {...register("employer")} className={formFieldClass} />
               <FieldError message={errors.employer?.message} />
             </div>
@@ -341,7 +346,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
         <fieldset className="space-y-4">
           <div className="min-w-0">
             <Label htmlFor="professionalBackground">
-              Please describe your professional background and current responsibilities. *
+              Please describe your professional background and current responsibilities.<RequiredMark />
             </Label>
             <Textarea
               id="professionalBackground"
@@ -354,7 +359,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
             <Label htmlFor="relevantExperience">
               Relevant experience in admissions, enrollment, education, youth sport, football,
               community outreach, relationship management, premium client service, or business
-              development *
+              development<RequiredMark />
             </Label>
             <Textarea
               id="relevantExperience"
@@ -364,7 +369,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
             <FieldError message={errors.relevantExperience?.message} />
           </div>
           <div className="min-w-0 md:max-w-md">
-            <Label>Years of relevant professional or community experience *</Label>
+            <Label>Years of relevant professional or community experience<RequiredMark /></Label>
             <Select
               value={watch("yearsExperience")}
               onValueChange={(v) => setValue("yearsExperience", v as string)}
@@ -400,7 +405,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
         <fieldset className="space-y-4">
           <div className="min-w-0">
             <Label htmlFor="communities">
-              Which communities or geographic areas are you best positioned to serve? *
+              Which communities or geographic areas are you best positioned to serve?<RequiredMark />
             </Label>
             <Textarea id="communities" {...register("communities")} className={formTextareaClass} />
             <FieldError message={errors.communities?.message} />
@@ -408,14 +413,14 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
           <div className="min-w-0">
             <Label htmlFor="networks">
               Describe the professional, educational, football, cultural, business, or community
-              networks relevant to your application. *
+              networks relevant to your application.<RequiredMark />
             </Label>
             <Textarea id="networks" {...register("networks")} className={formTextareaClass} />
             <FieldError message={errors.networks?.message} />
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="min-w-0">
-              <Label>Role with a school, club, academy, or related organization? *</Label>
+              <Label>Role with a school, club, academy, or related organization?<RequiredMark /></Label>
               <Select
                 value={watch("otherRole")}
                 onValueChange={(v) => setValue("otherRole", v as string)}
@@ -434,7 +439,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               <FieldError message={errors.otherRole?.message} />
             </div>
             <div className="min-w-0">
-              <Label>Authorized to recruit or refer for another organization? *</Label>
+              <Label>Authorized to recruit or refer for another organization?<RequiredMark /></Label>
               <Select
                 value={watch("authorizeOther")}
                 onValueChange={(v) => setValue("authorizeOther", v as string)}
@@ -480,7 +485,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
         <fieldset className="space-y-4">
           <div className="min-w-0">
             <Label htmlFor="whyInterested">
-              Why are you interested in becoming a SpherEarth Football Academy Admissions Advisor? *
+              Why are you interested in becoming a SpherEarth Football Academy Admissions Advisor?<RequiredMark />
             </Label>
             <Textarea
               id="whyInterested"
@@ -492,7 +497,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
           <div className="min-w-0">
             <Label htmlFor="familyNeeds">
               What do you believe families need when making important decisions about a child&apos;s
-              development? *
+              development?<RequiredMark />
             </Label>
             <Textarea id="familyNeeds" {...register("familyNeeds")} className={formTextareaClass} />
             <FieldError message={errors.familyNeeds?.message} />
@@ -500,7 +505,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
           <div className="min-w-0">
             <Label htmlFor="approachIntroducing">
               How would you approach introducing a premium football academy to a family without
-              creating pressure or unrealistic expectations? *
+              creating pressure or unrealistic expectations?<RequiredMark />
             </Label>
             <Textarea
               id="approachIntroducing"
@@ -512,14 +517,14 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
           <div className="min-w-0">
             <Label htmlFor="trustExample">
               Please provide an example of a time when you built trust with a client, parent,
-              student, family, or community member. *
+              student, family, or community member.<RequiredMark />
             </Label>
             <Textarea id="trustExample" {...register("trustExample")} className={formTextareaClass} />
             <FieldError message={errors.trustExample?.message} />
           </div>
           <div className="min-w-0">
             <Label htmlFor="integrityMeaning">
-              What does professional integrity mean to you in a relationship-based role? *
+              What does professional integrity mean to you in a relationship-based role?<RequiredMark />
             </Label>
             <Textarea
               id="integrityMeaning"
@@ -535,7 +540,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
         <fieldset className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="min-w-0">
-              <Label>What level of involvement are you interested in? *</Label>
+              <Label>What level of involvement are you interested in?<RequiredMark /></Label>
               <Select
                 value={watch("involvementLevel")}
                 onValueChange={(v) => setValue("involvementLevel", v as string)}
@@ -555,13 +560,13 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
             </div>
             <div className="min-w-0">
               <Label htmlFor="timeAvailable">
-                Approximately how much time could you make available each month? *
+                Approximately how much time could you make available each month?<RequiredMark />
               </Label>
               <Input id="timeAvailable" {...register("timeAvailable")} className={formFieldClass} />
               <FieldError message={errors.timeAvailable?.message} />
             </div>
             <div className="min-w-0">
-              <Label>Available for onboarding, training, documentation, and screening? *</Label>
+              <Label>Available for onboarding, training, documentation, and screening?<RequiredMark /></Label>
               <Select
                 value={watch("availableForOnboarding")}
                 onValueChange={(v) => setValue("availableForOnboarding", v as string)}
@@ -580,7 +585,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               <FieldError message={errors.availableForOnboarding?.message} />
             </div>
             <div className="min-w-0">
-              <Label>Comfortable using approved digital systems for referrals? *</Label>
+              <Label>Comfortable using approved digital systems for referrals?<RequiredMark /></Label>
               <Select
                 value={watch("digitalSystems")}
                 onValueChange={(v) => setValue("digitalSystems", v as string)}
@@ -600,7 +605,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
             </div>
             <div className="min-w-0 md:col-span-2">
               <Label htmlFor="startWhen">
-                When would you be available to begin if selected and authorized? *
+                When would you be available to begin if selected and authorized?<RequiredMark />
               </Label>
               <Input id="startWhen" {...register("startWhen")} className={formFieldClass} />
               <FieldError message={errors.startWhen?.message} />
@@ -614,7 +619,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
           <fieldset className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="min-w-0">
-                <Label>Willing to provide professional references if requested? *</Label>
+                <Label>Willing to provide professional references if requested?<RequiredMark /></Label>
                 <Select
                   value={watch("provideReferences")}
                   onValueChange={(v) => setValue("provideReferences", v as string)}
@@ -634,7 +639,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               </div>
               <div className="min-w-0">
                 <Label>
-                  Willing to complete background or vulnerable-sector screening if required? *
+                  Willing to complete background or vulnerable-sector screening if required?<RequiredMark />
                 </Label>
                 <Select
                   value={watch("backgroundScreening")}
@@ -656,7 +661,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
               <div className="min-w-0">
                 <Label>
                   Anything in your history that could affect suitability to represent an organization
-                  serving children and families? *
+                  serving children and families?<RequiredMark />
                 </Label>
                 <Select
                   value={watch("suitabilityDisclosure")}
@@ -676,7 +681,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 <FieldError message={errors.suitabilityDisclosure?.message} />
               </div>
               <div className="min-w-0">
-                <Label>Any actual or potential conflict of interest? *</Label>
+                <Label>Any actual or potential conflict of interest?<RequiredMark /></Label>
                 <Select
                   value={watch("conflictOfInterest")}
                   onValueChange={(v) => setValue("conflictOfInterest", v as string)}
@@ -695,7 +700,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 <FieldError message={errors.conflictOfInterest?.message} />
               </div>
               <div className="min-w-0">
-                <Label>Previously represented SpherEarth or a related organization? *</Label>
+                <Label>Previously represented SpherEarth or a related organization?<RequiredMark /></Label>
                 <Select
                   value={watch("previouslyRepresented")}
                   onValueChange={(v) => setValue("previouslyRepresented", v as string)}
@@ -714,7 +719,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 <FieldError message={errors.previouslyRepresented?.message} />
               </div>
               <div className="min-w-0">
-                <Label>Already introduced or referred any family to the academy? *</Label>
+                <Label>Already introduced or referred any family to the academy?<RequiredMark /></Label>
                 <Select
                   value={watch("alreadyReferred")}
                   onValueChange={(v) => setValue("alreadyReferred", v as string)}
@@ -733,7 +738,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 <FieldError message={errors.alreadyReferred?.message} />
               </div>
               <div className="min-w-0 md:col-span-2">
-                <Label>How did you learn about this opportunity? *</Label>
+                <Label>How did you learn about this opportunity?<RequiredMark /></Label>
                 <Select
                   value={watch("heardAbout")}
                   onValueChange={(v) => setValue("heardAbout", v as string)}
@@ -799,7 +804,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
             <label className="flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
-                className="mt-1"
+                className={formCheckboxClass}
                 checked={watch("consentAccurate") === true}
                 onChange={(e) => setValue("consentAccurate", e.target.checked as true)}
               />
@@ -807,39 +812,42 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 The information I have provided is accurate and complete to the best of my knowledge.
                 I understand that submitting an application does not authorize me to represent
                 SpherEarth Football Academy.
+                <RequiredMark />
               </span>
             </label>
             <FieldError message={errors.consentAccurate?.message} />
             <label className="flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
-                className="mt-1"
+                className={formCheckboxClass}
                 checked={watch("consentNoRepresent") === true}
                 onChange={(e) => setValue("consentNoRepresent", e.target.checked as true)}
               />
               <span>
                 I will not use the academy&apos;s name, logo, materials, or identity, or contact
                 families on its behalf, unless formally authorized.
+                <RequiredMark />
               </span>
             </label>
             <FieldError message={errors.consentNoRepresent?.message} />
             <label className="flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
-                className="mt-1"
+                className={formCheckboxClass}
                 checked={watch("consentContact") === true}
                 onChange={(e) => setValue("consentContact", e.target.checked as true)}
               />
               <span>
                 I consent to SpherEarth Football Academy and SpherEarth Inc. contacting me regarding
                 this application and related opportunities.
+                <RequiredMark />
               </span>
             </label>
             <FieldError message={errors.consentContact?.message} />
             <label className="flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
-                className="mt-1"
+                className={formCheckboxClass}
                 checked={watch("consentPrivacy") === true}
                 onChange={(e) => setValue("consentPrivacy", e.target.checked as true)}
               />
@@ -847,6 +855,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
                 I consent to the collection, use, and review of the information submitted for
                 recruitment, selection, screening, authorization, administration, and related
                 legitimate purposes, in accordance with the applicable privacy policy.
+                <RequiredMark />
               </span>
             </label>
             <FieldError message={errors.consentPrivacy?.message} />

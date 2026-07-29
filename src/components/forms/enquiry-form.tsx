@@ -16,7 +16,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { formFieldClass, formTextareaClass } from "@/components/forms/form-field-styles";
+import {
+  formCheckboxClass,
+  formFieldClass,
+  formTextareaClass,
+} from "@/components/forms/form-field-styles";
+import { RequiredMark } from "@/components/forms/required-mark";
 import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 import { enquiryDepartments } from "@/lib/content/navigation";
@@ -30,7 +35,7 @@ const enquirySchema = z.object({
   subject: z.string().min(3, "Required"),
   message: z.string().min(10, "Please provide more detail"),
   contactMethod: z.string().min(1, "Required"),
-  consent: z.literal(true, { message: "Consent required" }),
+  consent: z.literal(true, { message: "" }),
 });
 
 type EnquiryFormData = z.infer<typeof enquirySchema>;
@@ -67,7 +72,7 @@ export function EnquiryForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
       <div className="min-w-0">
-        <Label>Department *</Label>
+        <Label>Department<RequiredMark /></Label>
         <Select defaultValue={enquiryDepartments[0]} onValueChange={(v) => setValue("department", v as string)}>
           <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -79,12 +84,12 @@ export function EnquiryForm() {
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="min-w-0">
-          <Label htmlFor="name">Full Name *</Label>
+          <Label htmlFor="name">Full Name<RequiredMark /></Label>
           <Input id="name" {...register("name")} className={formFieldClass} />
           {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
         </div>
         <div className="min-w-0">
-          <Label htmlFor="email">Email Address *</Label>
+          <Label htmlFor="email">Email Address<RequiredMark /></Label>
           <Input id="email" type="email" {...register("email")} className={formFieldClass} />
           {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
         </div>
@@ -98,17 +103,17 @@ export function EnquiryForm() {
         </div>
       </div>
       <div className="min-w-0">
-        <Label htmlFor="subject">Subject *</Label>
+        <Label htmlFor="subject">Subject<RequiredMark /></Label>
         <Input id="subject" {...register("subject")} className={formFieldClass} />
         {errors.subject && <p className="text-xs text-destructive">{errors.subject.message}</p>}
       </div>
       <div className="min-w-0">
-        <Label htmlFor="message">Message *</Label>
+        <Label htmlFor="message">Message<RequiredMark /></Label>
         <Textarea id="message" {...register("message")} className={cn(formTextareaClass, "min-h-32")} />
         {errors.message && <p className="text-xs text-destructive">{errors.message.message}</p>}
       </div>
       <div className="min-w-0">
-        <Label>Preferred Method of Contact *</Label>
+        <Label>Preferred Method of Contact<RequiredMark /></Label>
         <Select defaultValue="Email" onValueChange={(v) => setValue("contactMethod", v as string)}>
           <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
           <SelectContent>
@@ -121,13 +126,18 @@ export function EnquiryForm() {
       <label className="flex items-start gap-3 text-sm">
         <input
           type="checkbox"
-          className="mt-1"
+          className={formCheckboxClass}
           checked={watch("consent") === true}
           onChange={(e) => setValue("consent", e.target.checked as true)}
         />
-        <span>I consent to SpherEarth Football Academy contacting me regarding my enquiry.</span>
+        <span>
+          I consent to SpherEarth Football Academy contacting me regarding my enquiry.
+          <RequiredMark />
+        </span>
       </label>
-      {errors.consent && <p className="text-xs text-destructive">{errors.consent.message}</p>}
+      {errors.consent?.message?.trim() ? (
+        <p className="text-xs text-destructive">{errors.consent.message}</p>
+      ) : null}
       <Button type="submit" disabled={isSubmitting} className="h-12 rounded-none bg-brand-green hover:bg-brand-green/90">
         Send Enquiry
         <ArrowRight className="size-4" />

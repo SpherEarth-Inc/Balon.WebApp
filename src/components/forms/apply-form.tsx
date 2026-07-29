@@ -18,7 +18,12 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { trainingLocations } from "@/lib/content/navigation";
-import { formFieldClass, formTextareaClass } from "@/components/forms/form-field-styles";
+import {
+  formCheckboxClass,
+  formFieldClass,
+  formTextareaClass,
+} from "@/components/forms/form-field-styles";
+import { RequiredMark } from "@/components/forms/required-mark";
 import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 
 const applySchema = z.object({
@@ -45,7 +50,7 @@ const applySchema = z.object({
   interestReason: z.string().min(10, "Please provide more detail"),
   expectations: z.string().min(10, "Please provide more detail"),
   scholarshipInterest: z.string().optional(),
-  consent: z.literal(true, { message: "Consent required" }),
+  consent: z.literal(true, { message: "" }),
 });
 
 type ApplyFormData = z.infer<typeof applySchema>;
@@ -106,12 +111,12 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
         <legend className="mb-4 text-lg font-bold uppercase">Parent / Guardian Information</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="min-w-0">
-            <Label htmlFor="parentName">Parent / Guardian Full Name *</Label>
+            <Label htmlFor="parentName">Parent / Guardian Full Name<RequiredMark /></Label>
             <Input id="parentName" {...register("parentName")} className={formFieldClass} />
             {errors.parentName && <p className="text-xs text-destructive">{errors.parentName.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label>Relationship to Player *</Label>
+            <Label>Relationship to Player<RequiredMark /></Label>
             <Select onValueChange={(v) => setValue("relationship", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
               <SelectContent>
@@ -123,22 +128,22 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
             {errors.relationship && <p className="text-xs text-destructive">{errors.relationship.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label htmlFor="email">Email Address *</Label>
+            <Label htmlFor="email">Email Address<RequiredMark /></Label>
             <Input id="email" type="email" {...register("email")} className={formFieldClass} />
             {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label htmlFor="phone">Mobile Phone Number *</Label>
+            <Label htmlFor="phone">Mobile Phone Number<RequiredMark /></Label>
             <Input id="phone" {...register("phone")} className={formFieldClass} />
             {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label htmlFor="city">City *</Label>
+            <Label htmlFor="city">City<RequiredMark /></Label>
             <Input id="city" {...register("city")} className={formFieldClass} />
             {errors.city && <p className="text-xs text-destructive">{errors.city.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label htmlFor="postalCode">Postal Code *</Label>
+            <Label htmlFor="postalCode">Postal Code<RequiredMark /></Label>
             <Input id="postalCode" {...register("postalCode")} className={formFieldClass} />
             {errors.postalCode && <p className="text-xs text-destructive">{errors.postalCode.message}</p>}
           </div>
@@ -149,17 +154,17 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
         <legend className="mb-4 text-lg font-bold uppercase">Player Information</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="min-w-0">
-            <Label htmlFor="playerName">Player Full Name *</Label>
+            <Label htmlFor="playerName">Player Full Name<RequiredMark /></Label>
             <Input id="playerName" {...register("playerName")} className={formFieldClass} />
             {errors.playerName && <p className="text-xs text-destructive">{errors.playerName.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label htmlFor="dateOfBirth">Date of Birth *</Label>
+            <Label htmlFor="dateOfBirth">Date of Birth<RequiredMark /></Label>
             <Input id="dateOfBirth" type="date" {...register("dateOfBirth")} className={formFieldClass} />
             {errors.dateOfBirth && <p className="text-xs text-destructive">{errors.dateOfBirth.message}</p>}
           </div>
           <div className="min-w-0">
-            <Label>Gender *</Label>
+            <Label>Gender<RequiredMark /></Label>
             <Select onValueChange={(v) => setValue("gender", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
               <SelectContent>
@@ -170,7 +175,7 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
             </Select>
           </div>
           <div className="min-w-0">
-            <Label>Preferred Playing Position *</Label>
+            <Label>Preferred Playing Position<RequiredMark /></Label>
             <Select defaultValue="Unsure" onValueChange={(v) => setValue("position", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -181,7 +186,7 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
             </Select>
           </div>
           <div className="min-w-0">
-            <Label>Dominant Foot *</Label>
+            <Label>Dominant Foot<RequiredMark /></Label>
             <Select defaultValue="Right" onValueChange={(v) => setValue("dominantFoot", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -198,7 +203,7 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
         <legend className="mb-4 text-lg font-bold uppercase">Program Interest</legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="min-w-0">
-            <Label>Program of Interest *</Label>
+            <Label>Program of Interest<RequiredMark /></Label>
             <Select defaultValue="Not Sure (Request Guidance)" onValueChange={(v) => setValue("program", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -209,7 +214,7 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
             </Select>
           </div>
           <div className="min-w-0">
-            <Label>Preferred Training Location *</Label>
+            <Label>Preferred Training Location<RequiredMark /></Label>
             <Select defaultValue="Toronto Core" onValueChange={(v) => setValue("location", v as string)}>
               <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -221,12 +226,12 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
           </div>
         </div>
         <div className="min-w-0">
-          <Label htmlFor="interestReason">Why are you interested in SpherEarth Football Academy? *</Label>
+          <Label htmlFor="interestReason">Why are you interested in SpherEarth Football Academy?<RequiredMark /></Label>
           <Textarea id="interestReason" {...register("interestReason")} className={formTextareaClass} />
           {errors.interestReason && <p className="text-xs text-destructive">{errors.interestReason.message}</p>}
         </div>
         <div className="min-w-0">
-          <Label htmlFor="expectations">What are your family&apos;s expectations? *</Label>
+          <Label htmlFor="expectations">What are your family&apos;s expectations?<RequiredMark /></Label>
           <Textarea id="expectations" {...register("expectations")} className={formTextareaClass} />
           {errors.expectations && <p className="text-xs text-destructive">{errors.expectations.message}</p>}
         </div>
@@ -236,16 +241,19 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
         <label className="flex items-start gap-3 text-sm">
           <input
             type="checkbox"
-            className="mt-1"
+            className={formCheckboxClass}
             checked={watch("consent") === true}
             onChange={(e) => setValue("consent", e.target.checked as true)}
           />
           <span>
             I confirm the information is accurate, consent to contact, have read the Privacy Policy,
             and understand submission does not guarantee admission.
+            <RequiredMark />
           </span>
         </label>
-        {errors.consent && <p className="text-xs text-destructive">{errors.consent.message}</p>}
+        {errors.consent?.message?.trim() ? (
+          <p className="text-xs text-destructive">{errors.consent.message}</p>
+        ) : null}
       </div>
 
       <Button type="submit" disabled={isSubmitting} className="h-12 rounded-none bg-brand-green hover:bg-brand-green/90">

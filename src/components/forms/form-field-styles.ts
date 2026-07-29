@@ -3,3 +3,6 @@ export const formFieldClass =
 
 export const formTextareaClass =
   "min-h-24 w-full rounded-none bg-background focus-visible:border-input focus-visible:ring-0";
+
+/** Native checkbox tinted with brand green when checked. */
+export const formCheckboxClass = "mt-1 size-4 shrink-0 accent-brand-green";
