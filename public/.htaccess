@@ -23,11 +23,10 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_URI} !/$
   RewriteRule ^(.+)$ /$1/ [R=301,L]
 
-  # Dynamic news articles: serve the static-export placeholder "_" page.
-  # Client React still reads the real slug from the browser URL.
-  # Skip existing files so /news/ (news/index.html) is not stolen into news/_/.
+  # Pretty article bookmarks → static view page with ?slug=
+  # (avoids Next static-export generateStaticParams errors for new articles)
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^news/[^/]+/?$ /news/_/index.html [L]
+  RewriteRule ^news/(?!view/)([^/]+)/?$ /news/view/?slug=$1 [R=301,L]
 
   # Serve folder index.html for clean URLs
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -35,4 +34,4 @@ DirectoryIndex index.html
   RewriteRule ^(.+?)/?$ $1/index.html [L]
 </IfModule>
 
-# Redeploy bump 2026-07-29-home-news
+# Redeploy bump 2026-07-29-news-view-slug

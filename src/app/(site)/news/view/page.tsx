@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { NewsArticleSection } from "@/components/news/news-article-section";
 import { createMetadata } from "@/lib/content/site";
 
@@ -7,11 +8,16 @@ export const metadata = createMetadata({
   path: "/news/",
 });
 
-/** Static-export placeholder; Apache rewrites real slugs to this page. */
-export function generateStaticParams() {
-  return [{ slug: "_" }];
-}
-
 export default function NewsArticlePage() {
-  return <NewsArticleSection />;
+  return (
+    <Suspense
+      fallback={
+        <div className="container mx-auto container-padding section-padding">
+          <p className="text-sm text-muted-foreground">Loading article…</p>
+        </div>
+      }
+    >
+      <NewsArticleSection />
+    </Suspense>
+  );
 }

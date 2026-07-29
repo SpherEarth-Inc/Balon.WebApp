@@ -6,6 +6,7 @@ import { SectionHeader } from "@/components/sections/section-header";
 import {
   isNewsNotConfigured,
   listNews,
+  newsArticleHref,
   type NewsListItem,
 } from "@/lib/api/news";
 
@@ -17,7 +18,7 @@ function toCard(item: NewsListItem, index: number, page: number): CardWallItem {
     tag: item.category_name?.trim() || "News",
     title: item.title,
     description: item.summary || undefined,
-    href: `/news/${item.slug}/`,
+    href: newsArticleHref(item.slug),
     image: item.featured_image || FALLBACK_IMAGE,
     featured: page === 1 && index === 0,
   };

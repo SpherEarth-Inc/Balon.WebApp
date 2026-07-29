@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { TipTapContent } from "@/components/news/tiptap-content";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -12,6 +14,9 @@ import {
 
 const FALLBACK_IMAGE = "/images/explore/news.webp";
 
+const backButtonClassName =
+  "h-12 gap-2 rounded-none border-brand-green px-8 text-base text-brand-green hover:bg-transparent hover:text-brand-green md:h-14 md:px-10 md:text-lg";
+
 function formatPublishedAt(value: string | null) {
   if (!value) return null;
   const date = new Date(value);
@@ -19,24 +24,31 @@ function formatPublishedAt(value: string | null) {
   return new Intl.DateTimeFormat("en-CA", { dateStyle: "long" }).format(date);
 }
 
-/** Prefer the browser URL — static export serves /news/_/ for all slugs via Apache. */
-function articleSlugFromPath(pathname: string): string {
+/** Resolve slug from ?slug= (preferred) or leftover pretty-path rewrites. */
+function resolveArticleSlug(pathname: string, querySlug: string | null): string {
+  const fromQuery = (querySlug ?? "").trim();
+  if (fromQuery && fromQuery !== "_" && fromQuery !== "view") {
+    return fromQuery;
+  }
+
   const parts = pathname.split("/").filter(Boolean);
   if (parts[0] !== "news" || parts.length < 2) return "";
   const slug = decodeURIComponent(parts[1] ?? "");
-  if (!slug || slug === "_") return "";
+  if (!slug || slug === "_" || slug === "view") return "";
   return slug;
 }
 
 export function NewsArticleSection() {
+  const searchParams = useSearchParams();
+  const querySlug = searchParams.get("slug");
   const [slug, setSlug] = useState<string | null>(null);
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setSlug(articleSlugFromPath(window.location.pathname));
-  }, []);
+    setSlug(resolveArticleSlug(window.location.pathname, querySlug));
+  }, [querySlug]);
 
   useEffect(() => {
     if (slug === null) return;
@@ -88,7 +100,13 @@ export function NewsArticleSection() {
         <p className="text-sm text-muted-foreground">
           {error ?? "Article not found."}
         </p>
-        <ButtonLink href="/news/" variant="outline">
+        <ButtonLink
+          href="/news/"
+          variant="outline"
+          size="lg"
+          className={backButtonClassName}
+        >
+          <ArrowLeft className="size-4" />
           Back to news
         </ButtonLink>
       </div>
@@ -126,7 +144,13 @@ export function NewsArticleSection() {
             <TipTapContent doc={article.content} />
 
             <div className="pt-4">
-              <ButtonLink href="/news/" variant="outline">
+              <ButtonLink
+                href="/news/"
+                variant="outline"
+                size="lg"
+                className={backButtonClassName}
+              >
+                <ArrowLeft className="size-4" />
                 Back to news
               </ButtonLink>
             </div>

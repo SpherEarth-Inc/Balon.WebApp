@@ -83,6 +83,11 @@ export function getNews(slug: string) {
   );
 }
 
+/** Static-export safe article URL (avoids dynamic [slug] routes). */
+export function newsArticleHref(slug: string) {
+  return `/news/view/?slug=${encodeURIComponent(slug)}`;
+}
+
 export function isNewsNotConfigured(error: unknown) {
   return error instanceof Error && error.message === "NEWS_NOT_CONFIGURED";
 }
