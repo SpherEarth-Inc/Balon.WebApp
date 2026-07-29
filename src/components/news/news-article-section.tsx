@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { PageHero } from "@/components/layout/page-hero";
 import { TipTapContent } from "@/components/news/tiptap-content";
 import { ButtonLink } from "@/components/ui/button-link";
@@ -20,15 +19,29 @@ function formatPublishedAt(value: string | null) {
   return new Intl.DateTimeFormat("en-CA", { dateStyle: "long" }).format(date);
 }
 
+/** Prefer the browser URL — static export serves /news/_/ for all slugs via Apache. */
+function articleSlugFromPath(pathname: string): string {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts[0] !== "news" || parts.length < 2) return "";
+  const slug = decodeURIComponent(parts[1] ?? "");
+  if (!slug || slug === "_") return "";
+  return slug;
+}
+
 export function NewsArticleSection() {
-  const params = useParams<{ slug: string }>();
-  const slug = typeof params.slug === "string" ? params.slug : "";
+  const [slug, setSlug] = useState<string | null>(null);
   const [article, setArticle] = useState<NewsArticle | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!slug || slug === "_") {
+    setSlug(articleSlugFromPath(window.location.pathname));
+  }, []);
+
+  useEffect(() => {
+    if (slug === null) return;
+
+    if (!slug) {
       setLoading(false);
       setError("Article not found.");
       return;
@@ -61,7 +74,7 @@ export function NewsArticleSection() {
     };
   }, [slug]);
 
-  if (loading) {
+  if (slug === null || loading) {
     return (
       <div className="container mx-auto container-padding section-padding">
         <p className="text-sm text-muted-foreground">Loading article…</p>
@@ -105,7 +118,9 @@ export function NewsArticleSection() {
               <span className="inline-flex bg-red-600 px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-widest text-white">
                 {category}
               </span>
-              {published ? <time dateTime={article.published_at ?? undefined}>{published}</time> : null}
+              {published ? (
+                <time dateTime={article.published_at ?? undefined}>{published}</time>
+              ) : null}
             </div>
 
             <TipTapContent doc={article.content} />
