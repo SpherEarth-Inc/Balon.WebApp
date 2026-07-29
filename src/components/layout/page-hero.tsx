@@ -28,7 +28,7 @@ export function PageHero({
     return (
       <section
         className={cn(
-          "relative isolate overflow-hidden border-b bg-brand-navy text-white",
+          "relative isolate flex min-h-[36vh] flex-col justify-end overflow-hidden border-b bg-brand-navy text-white md:min-h-[42vh]",
           className
         )}
       >
@@ -41,17 +41,19 @@ export function PageHero({
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent" />
-        <div className="container relative mx-auto container-padding py-20 md:py-28 lg:py-32">
-          <h1 className="text-4xl font-bold uppercase tracking-wide md:text-5xl lg:text-6xl">
+        <div className="container relative mx-auto container-padding pb-6 pt-14 md:pb-8">
+          <h1 className="max-w-3xl text-3xl font-bold uppercase leading-[0.95] tracking-tight md:text-4xl lg:text-5xl">
             {title}
           </h1>
           {breadcrumb && breadcrumb.length > 0 && (
-            <div className={cn("mt-4", crumbStyles)}>
+            <div className={cn("mt-3", crumbStyles)}>
               <BreadcrumbNav items={breadcrumb} />
             </div>
           )}
           {description && (
-            <p className="mt-4 max-w-5xl text-lg text-white/80">{description}</p>
+            <p className="mt-3 max-w-xl text-sm text-white/85 md:mt-4 md:text-base">
+              {description}
+            </p>
           )}
         </div>
       </section>
@@ -60,17 +62,24 @@ export function PageHero({
 
   return (
     <section className="border-b bg-brand-navy text-white">
-      <div className="container mx-auto container-padding section-padding">
+      <div className="container mx-auto container-padding py-10 md:py-12">
         {breadcrumb && breadcrumb.length > 0 && (
           <div className={crumbStyles}>
             <BreadcrumbNav items={breadcrumb} />
           </div>
         )}
-        <h1 className="text-3xl font-bold uppercase tracking-wide md:text-4xl lg:text-5xl">
+        <h1
+          className={cn(
+            "text-3xl font-bold uppercase leading-[0.95] tracking-tight md:text-4xl lg:text-5xl",
+            breadcrumb && breadcrumb.length > 0 && "mt-3"
+          )}
+        >
           {title}
         </h1>
         {description && (
-          <p className="mt-4 max-w-5xl text-lg text-white/80">{description}</p>
+          <p className="mt-3 max-w-xl text-sm text-white/85 md:mt-4 md:text-base">
+            {description}
+          </p>
         )}
       </div>
     </section>

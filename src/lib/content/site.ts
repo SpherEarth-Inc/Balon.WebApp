@@ -1,3 +1,5 @@
+import { images } from "@/lib/content/assets";
+
 export const siteConfig = {
   name: "SpherEarth Football Academy",
   shortName: "SpherEarth Academy",
@@ -47,6 +49,11 @@ export function createMetadata({
   return {
     title: fullTitle,
     description: description ?? siteConfig.description,
+    icons: {
+      icon: [{ url: images.logo, type: "image/webp" }],
+      shortcut: images.logo,
+      apple: images.logo,
+    },
     openGraph: {
       title: fullTitle,
       description: description ?? siteConfig.description,

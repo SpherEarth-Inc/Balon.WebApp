@@ -56,7 +56,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   }, [active, slides, next]);
 
   return (
-    <section className="relative isolate flex min-h-screen flex-col justify-end overflow-hidden bg-brand-navy text-white">
+    <section className="relative isolate flex min-h-[36vh] flex-col justify-end overflow-hidden bg-brand-navy text-white md:min-h-[42vh]">
       {slides.map((slide, i) => (
         <div
           key={`${slide.tag}-bg-${i}`}
@@ -114,23 +114,23 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
 
-      <div className="container relative z-10 mx-auto container-padding pb-14 pt-24 md:pb-20">
+      <div className="container relative z-10 mx-auto container-padding pb-6 pt-14 md:pb-8">
         {slides.map((slide, i) => (
           <div key={`${slide.headline}-content-${i}`} className={i === active ? "block" : "hidden"}>
             {slide.tag && (
-              <span className="inline-flex bg-red-600 px-3 py-1.5 text-xs font-bold uppercase tracking-widest">
+              <span className="inline-flex bg-red-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest md:text-xs">
                 {slide.tag}
               </span>
             )}
-            <h1 className="mt-4 max-w-4xl text-4xl font-bold uppercase leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
+            <h1 className="mt-3 max-w-3xl text-3xl font-bold uppercase leading-[0.95] tracking-tight md:text-4xl lg:text-5xl">
               {slide.headline}
             </h1>
             {slide.description && (
-              <p className="mt-6 max-w-2xl text-base text-white/85 md:text-lg">
+              <p className="mt-3 max-w-xl text-sm text-white/85 md:mt-4 md:text-base">
                 {slide.description}
               </p>
             )}
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-2.5 md:mt-6">
               {slide.ctas.map((cta, ci) => (
                 <ButtonLink
                   key={`${cta.href}-${cta.label}`}
@@ -138,14 +138,14 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   size="lg"
                   variant={ci === 0 ? "default" : "outline"}
                   className={cn(
-                    "h-12 gap-2 px-8 text-base md:h-14 md:px-10 md:text-lg",
+                    "h-10 gap-2 px-6 text-sm md:h-11 md:px-8 md:text-base",
                     ci === 0
                       ? "rounded-none bg-brand-green hover:bg-brand-green/90"
                       : "rounded-none border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
                   )}
                 >
                   {cta.label}
-                  {ci === 0 && <ArrowRight className="size-5" />}
+                  {ci === 0 && <ArrowRight className="size-4" />}
                 </ButtonLink>
               ))}
             </div>
@@ -153,7 +153,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         ))}
 
         {slides.length > 1 && (
-          <div className="mt-8 flex gap-2">
+          <div className="mt-5 flex gap-2 md:mt-6">
             {slides.map((slide, i) => (
               <button
                 key={`${slide.headline}-dot-${i}`}

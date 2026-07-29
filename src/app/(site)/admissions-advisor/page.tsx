@@ -25,7 +25,6 @@ export default function AdmissionsAdvisorPage() {
         breadcrumb={breadcrumb}
         image={meta.heroImage}
         imageClassName="object-top"
-        className="min-h-[360px] md:min-h-[440px]"
       />
       <AdvisorPageContent />
     </>
