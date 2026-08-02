@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Oswald, Space_Grotesk } from "next/font/google";
+import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
 import { Toaster } from "@/components/ui/sonner";
 import { createMetadata, siteConfig } from "@/lib/content/site";
 import "./globals.css";
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {children}
         <Toaster richColors position="top-right" />
+        <AnalyticsScripts />
       </body>
     </html>
   );

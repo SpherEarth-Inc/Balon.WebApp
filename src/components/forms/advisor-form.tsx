@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { trackAdvisorConversion } from "@/lib/analytics";
 import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 
@@ -251,6 +252,7 @@ export function AdvisorForm({ onSuccess }: AdvisorFormProps) {
   async function onSubmit(data: AdvisorFormData) {
     try {
       await submitForm(FORM_SLUGS.admissionsAdvisor, { data });
+      trackAdvisorConversion();
       toast.success("Expression of interest received!", {
         description:
           "Our team will review your application. Selected candidates may be contacted for a confidential introductory conversation.",
