@@ -1,7 +1,12 @@
 import type { NavItem } from "@/types/content";
 
+// Login lives in the separate Next.js server app (balon.spherearth.ca), not this
+// static site. Configurable via env so the exact host is easy to change.
+const appLoginUrl =
+  process.env.NEXT_PUBLIC_APP_LOGIN_URL?.trim() || "https://balon.spherearth.ca";
+
 export const headerActions = {
-  login: { label: "Log In", href: "/app/login/" },
+  login: { label: "Log In", href: appLoginUrl },
   apply: { label: "Apply Now", href: "/admissions/apply/" },
 } as const;
 
