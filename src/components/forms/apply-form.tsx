@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -25,6 +26,7 @@ import {
 } from "@/components/forms/form-field-styles";
 import { RequiredMark } from "@/components/forms/required-mark";
 import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
+import { cn } from "@/lib/utils";
 
 const applySchema = z.object({
   parentName: z.string().min(2, "Required"),
@@ -54,22 +56,78 @@ const applySchema = z.object({
 });
 
 type ApplyFormData = z.infer<typeof applySchema>;
+type ApplyField = keyof ApplyFormData;
+
+const STEPS = [
+  {
+    id: "parent",
+    title: "Parent / Guardian Information",
+    fields: [
+      "parentName",
+      "relationship",
+      "email",
+      "phone",
+      "city",
+      "postalCode",
+    ] as const satisfies readonly ApplyField[],
+  },
+  {
+    id: "player",
+    title: "Player Information",
+    fields: [
+      "playerName",
+      "dateOfBirth",
+      "gender",
+      "position",
+      "dominantFoot",
+    ] as const satisfies readonly ApplyField[],
+  },
+  {
+    id: "program",
+    title: "Program Interest",
+    fields: [
+      "program",
+      "location",
+      "interestReason",
+      "expectations",
+    ] as const satisfies readonly ApplyField[],
+  },
+  {
+    id: "consent",
+    title: "Confirmation",
+    fields: ["consent"] as const satisfies readonly ApplyField[],
+  },
+] as const;
 
 interface ApplyFormProps {
   onSuccess?: () => void;
 }
 
+function FieldError({ message }: { message?: string }) {
+  if (!message?.trim()) return null;
+  return <p className="text-xs text-destructive">{message}</p>;
+}
+
 export function ApplyForm({ onSuccess }: ApplyFormProps) {
   const router = useRouter();
+  const [stepIndex, setStepIndex] = useState(0);
+  const isFirstStep = stepIndex === 0;
+  const isLastStep = stepIndex === STEPS.length - 1;
+  const currentStep = STEPS[stepIndex];
+
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<ApplyFormData>({
     resolver: zodResolver(applySchema),
     defaultValues: {
+      relationship: "",
+      gender: "",
       contactMethod: "Email",
       contactTime: "Afternoon",
       position: "Unsure",
@@ -85,12 +143,24 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
     },
   });
 
+  async function goNext() {
+    const valid = await trigger([...currentStep.fields]);
+    if (!valid) return;
+    setStepIndex((i) => Math.min(i + 1, STEPS.length - 1));
+  }
+
+  function goBack() {
+    setStepIndex((i) => Math.max(i - 1, 0));
+  }
+
   async function onSubmit(data: ApplyFormData) {
     try {
       await submitForm(FORM_SLUGS.admissionsApply, { data });
       toast.success("Application submitted!", {
         description: "Our Admissions Team will contact you through verified channels.",
       });
+      reset();
+      setStepIndex(0);
       if (onSuccess) {
         onSuccess();
         return;
@@ -106,160 +176,235 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10" noValidate>
-      <fieldset className="space-y-4">
-        <legend className="mb-4 text-lg font-bold uppercase">Parent / Guardian Information</legend>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="min-w-0">
-            <Label htmlFor="parentName">Parent / Guardian Full Name<RequiredMark /></Label>
-            <Input id="parentName" {...register("parentName")} className={formFieldClass} />
-            {errors.parentName && <p className="text-xs text-destructive">{errors.parentName.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label>Relationship to Player<RequiredMark /></Label>
-            <Select onValueChange={(v) => setValue("relationship", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
-              <SelectContent>
-                {["Mother", "Father", "Guardian", "Other"].map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.relationship && <p className="text-xs text-destructive">{errors.relationship.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label htmlFor="email">Email Address<RequiredMark /></Label>
-            <Input id="email" type="email" {...register("email")} className={formFieldClass} />
-            {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label htmlFor="phone">Mobile Phone Number<RequiredMark /></Label>
-            <Input id="phone" {...register("phone")} className={formFieldClass} />
-            {errors.phone && <p className="text-xs text-destructive">{errors.phone.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label htmlFor="city">City<RequiredMark /></Label>
-            <Input id="city" {...register("city")} className={formFieldClass} />
-            {errors.city && <p className="text-xs text-destructive">{errors.city.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label htmlFor="postalCode">Postal Code<RequiredMark /></Label>
-            <Input id="postalCode" {...register("postalCode")} className={formFieldClass} />
-            {errors.postalCode && <p className="text-xs text-destructive">{errors.postalCode.message}</p>}
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+      <div>
+        <p className="text-sm text-muted-foreground">
+          Step {stepIndex + 1} of {STEPS.length}
+        </p>
+        <div className="mt-3 flex gap-1.5" aria-hidden>
+          {STEPS.map((step, i) => (
+            <div
+              key={step.id}
+              className={cn(
+                "h-1.5 flex-1 rounded-full",
+                i <= stepIndex ? "bg-brand-green" : "bg-muted"
+              )}
+            />
+          ))}
         </div>
-      </fieldset>
-
-      <fieldset className="space-y-4">
-        <legend className="mb-4 text-lg font-bold uppercase">Player Information</legend>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="min-w-0">
-            <Label htmlFor="playerName">Player Full Name<RequiredMark /></Label>
-            <Input id="playerName" {...register("playerName")} className={formFieldClass} />
-            {errors.playerName && <p className="text-xs text-destructive">{errors.playerName.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label htmlFor="dateOfBirth">Date of Birth<RequiredMark /></Label>
-            <Input id="dateOfBirth" type="date" {...register("dateOfBirth")} className={formFieldClass} />
-            {errors.dateOfBirth && <p className="text-xs text-destructive">{errors.dateOfBirth.message}</p>}
-          </div>
-          <div className="min-w-0">
-            <Label>Gender<RequiredMark /></Label>
-            <Select onValueChange={(v) => setValue("gender", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
-              <SelectContent>
-                {["Male", "Female", "Prefer not to say"].map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="min-w-0">
-            <Label>Preferred Playing Position<RequiredMark /></Label>
-            <Select defaultValue="Unsure" onValueChange={(v) => setValue("position", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {["Goalkeeper", "Defender", "Midfielder", "Forward", "Unsure"].map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="min-w-0">
-            <Label>Dominant Foot<RequiredMark /></Label>
-            <Select defaultValue="Right" onValueChange={(v) => setValue("dominantFoot", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {["Right", "Left", "Both"].map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset className="space-y-4">
-        <legend className="mb-4 text-lg font-bold uppercase">Program Interest</legend>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="min-w-0">
-            <Label>Program of Interest<RequiredMark /></Label>
-            <Select defaultValue="Not Sure (Request Guidance)" onValueChange={(v) => setValue("program", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {["Founding Program", "Premier Program", "Signature Program", "Not Sure (Request Guidance)"].map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="min-w-0">
-            <Label>Preferred Training Location<RequiredMark /></Label>
-            <Select defaultValue="Toronto Core" onValueChange={(v) => setValue("location", v as string)}>
-              <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {trainingLocations.map((o) => (
-                  <SelectItem key={o} value={o}>{o}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="min-w-0">
-          <Label htmlFor="interestReason">Why are you interested in SpherEarth Football Academy?<RequiredMark /></Label>
-          <Textarea id="interestReason" {...register("interestReason")} className={formTextareaClass} />
-          {errors.interestReason && <p className="text-xs text-destructive">{errors.interestReason.message}</p>}
-        </div>
-        <div className="min-w-0">
-          <Label htmlFor="expectations">What are your family&apos;s expectations?<RequiredMark /></Label>
-          <Textarea id="expectations" {...register("expectations")} className={formTextareaClass} />
-          {errors.expectations && <p className="text-xs text-destructive">{errors.expectations.message}</p>}
-        </div>
-      </fieldset>
-
-      <div className="space-y-3">
-        <label className="flex items-start gap-3 text-sm">
-          <input
-            type="checkbox"
-            className={formCheckboxClass}
-            checked={watch("consent") === true}
-            onChange={(e) => setValue("consent", e.target.checked as true)}
-          />
-          <span>
-            I confirm the information is accurate, consent to contact, have read the Privacy Policy,
-            and understand submission does not guarantee admission.
-            <RequiredMark />
-          </span>
-        </label>
-        {errors.consent?.message?.trim() ? (
-          <p className="text-xs text-destructive">{errors.consent.message}</p>
-        ) : null}
+        <h3 className="mt-4 text-lg font-bold uppercase">{currentStep.title}</h3>
       </div>
 
-      <Button type="submit" disabled={isSubmitting} className="h-12 rounded-none bg-brand-green hover:bg-brand-green/90">
-        Start My Admissions Journey
-        <ArrowRight className="size-4" />
-      </Button>
+      {currentStep.id === "parent" && (
+        <fieldset className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="min-w-0">
+              <Label htmlFor="parentName">Parent / Guardian Full Name<RequiredMark /></Label>
+              <Input id="parentName" {...register("parentName")} className={formFieldClass} />
+              <FieldError message={errors.parentName?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label>Relationship to Player<RequiredMark /></Label>
+              <Select
+                value={watch("relationship") ?? ""}
+                onValueChange={(v) => setValue("relationship", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {["Mother", "Father", "Guardian", "Other"].map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.relationship?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label htmlFor="email">Email Address<RequiredMark /></Label>
+              <Input id="email" type="email" {...register("email")} className={formFieldClass} />
+              <FieldError message={errors.email?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label htmlFor="phone">Mobile Phone Number<RequiredMark /></Label>
+              <Input id="phone" {...register("phone")} className={formFieldClass} />
+              <FieldError message={errors.phone?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label htmlFor="city">City<RequiredMark /></Label>
+              <Input id="city" {...register("city")} className={formFieldClass} />
+              <FieldError message={errors.city?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label htmlFor="postalCode">Postal Code<RequiredMark /></Label>
+              <Input id="postalCode" {...register("postalCode")} className={formFieldClass} />
+              <FieldError message={errors.postalCode?.message} />
+            </div>
+          </div>
+        </fieldset>
+      )}
+
+      {currentStep.id === "player" && (
+        <fieldset className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="min-w-0">
+              <Label htmlFor="playerName">Player Full Name<RequiredMark /></Label>
+              <Input id="playerName" {...register("playerName")} className={formFieldClass} />
+              <FieldError message={errors.playerName?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label htmlFor="dateOfBirth">Date of Birth<RequiredMark /></Label>
+              <Input id="dateOfBirth" type="date" {...register("dateOfBirth")} className={formFieldClass} />
+              <FieldError message={errors.dateOfBirth?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label>Gender<RequiredMark /></Label>
+              <Select
+                value={watch("gender") ?? ""}
+                onValueChange={(v) => setValue("gender", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue placeholder="Select" /></SelectTrigger>
+                <SelectContent>
+                  {["Male", "Female", "Prefer not to say"].map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.gender?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label>Preferred Playing Position<RequiredMark /></Label>
+              <Select
+                value={watch("position") ?? ""}
+                onValueChange={(v) => setValue("position", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["Goalkeeper", "Defender", "Midfielder", "Forward", "Unsure"].map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.position?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label>Dominant Foot<RequiredMark /></Label>
+              <Select
+                value={watch("dominantFoot") ?? ""}
+                onValueChange={(v) => setValue("dominantFoot", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["Right", "Left", "Both"].map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.dominantFoot?.message} />
+            </div>
+          </div>
+        </fieldset>
+      )}
+
+      {currentStep.id === "program" && (
+        <fieldset className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="min-w-0">
+              <Label>Program of Interest<RequiredMark /></Label>
+              <Select
+                value={watch("program") ?? ""}
+                onValueChange={(v) => setValue("program", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {["Founding Program", "Premier Program", "Signature Program", "Not Sure (Request Guidance)"].map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.program?.message} />
+            </div>
+            <div className="min-w-0">
+              <Label>Preferred Training Location<RequiredMark /></Label>
+              <Select
+                value={watch("location") ?? ""}
+                onValueChange={(v) => setValue("location", v as string, { shouldValidate: true })}
+              >
+                <SelectTrigger className={formFieldClass}><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {trainingLocations.map((o) => (
+                    <SelectItem key={o} value={o}>{o}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FieldError message={errors.location?.message} />
+            </div>
+          </div>
+          <div className="min-w-0">
+            <Label htmlFor="interestReason">Why are you interested in SpherEarth Football Academy?<RequiredMark /></Label>
+            <Textarea id="interestReason" {...register("interestReason")} className={formTextareaClass} />
+            <FieldError message={errors.interestReason?.message} />
+          </div>
+          <div className="min-w-0">
+            <Label htmlFor="expectations">What are your family&apos;s expectations?<RequiredMark /></Label>
+            <Textarea id="expectations" {...register("expectations")} className={formTextareaClass} />
+            <FieldError message={errors.expectations?.message} />
+          </div>
+        </fieldset>
+      )}
+
+      {currentStep.id === "consent" && (
+        <div className="space-y-3">
+          <label className="flex items-start gap-3 text-sm">
+            <input
+              type="checkbox"
+              className={formCheckboxClass}
+              checked={watch("consent") === true}
+              onChange={(e) => setValue("consent", e.target.checked as true, { shouldValidate: true })}
+            />
+            <span>
+              I confirm the information is accurate, consent to contact, have read the Privacy Policy,
+              and understand submission does not guarantee admission.
+              <RequiredMark />
+            </span>
+          </label>
+          <FieldError message={errors.consent?.message} />
+        </div>
+      )}
+
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {!isFirstStep ? (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={goBack}
+            className="h-12 rounded-none"
+          >
+            <ArrowLeft className="size-4" />
+            Back
+          </Button>
+        ) : (
+          <span />
+        )}
+
+        {isLastStep ? (
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="h-12 rounded-none bg-brand-green hover:bg-brand-green/90"
+          >
+            Start My Admissions Journey
+            <ArrowRight className="size-4" />
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={goNext}
+            className="h-12 rounded-none bg-brand-green hover:bg-brand-green/90"
+          >
+            Next
+            <ArrowRight className="size-4" />
+          </Button>
+        )}
+      </div>
     </form>
   );
 }
