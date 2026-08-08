@@ -32,9 +32,12 @@ export default function RootLayout({
       lang="en-CA"
       className={`${spaceGrotesk.variable} ${oswald.variable} h-full antialiased`}
     >
+      <head>
+        {/* Google requires the GTM bootstrap as high in <head> as possible */}
+        <GoogleTagManagerScript />
+      </head>
       <body className="flex min-h-full flex-col">
         <GoogleTagManagerNoscript />
-        <GoogleTagManagerScript />
         {children}
         <Toaster richColors position="top-right" />
         <AnalyticsScripts />
