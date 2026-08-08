@@ -25,6 +25,7 @@ import {
   formTextareaClass,
 } from "@/components/forms/form-field-styles";
 import { RequiredMark } from "@/components/forms/required-mark";
+import { trackAdmissionsApplyConversion } from "@/lib/analytics";
 import { FORM_SLUGS, isFormsNotConfigured, submitForm } from "@/lib/api/forms";
 import { cn } from "@/lib/utils";
 
@@ -156,6 +157,7 @@ export function ApplyForm({ onSuccess }: ApplyFormProps) {
   async function onSubmit(data: ApplyFormData) {
     try {
       await submitForm(FORM_SLUGS.admissionsApply, { data });
+      trackAdmissionsApplyConversion();
       toast.success("Application submitted!", {
         description: "Our Admissions Team will contact you through verified channels.",
       });

@@ -1,11 +1,26 @@
 declare global {
   interface Window {
+    dataLayer?: Record<string, unknown>[];
     _linkedin_partner_id?: string;
     _linkedin_data_partner_ids?: string[];
     lintrk?: (action: string, data?: Record<string, unknown>) => void;
     fbq?: (...args: unknown[]) => void;
     twq?: (...args: unknown[]) => void;
   }
+}
+
+export function pushDataLayerEvent(
+  event: string,
+  payload: Record<string, unknown> = {}
+) {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event, ...payload });
+}
+
+/** Google Ads / GTM conversion for a successful Admissions Apply submit. */
+export function trackAdmissionsApplyConversion() {
+  pushDataLayerEvent("admissions_apply_submit");
 }
 
 const LINKEDIN_CONVERSION_ID = process.env.NEXT_PUBLIC_LINKEDIN_ADVISOR_CONVERSION_ID;

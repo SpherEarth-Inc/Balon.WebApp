@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Oswald, Space_Grotesk } from "next/font/google";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
+import {
+  GoogleTagManagerNoscript,
+  GoogleTagManagerScript,
+} from "@/components/analytics/google-tag-manager";
 import { Toaster } from "@/components/ui/sonner";
 import { createMetadata, siteConfig } from "@/lib/content/site";
 import "./globals.css";
@@ -29,6 +33,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${oswald.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <GoogleTagManagerNoscript />
+        <GoogleTagManagerScript />
         {children}
         <Toaster richColors position="top-right" />
         <AnalyticsScripts />
