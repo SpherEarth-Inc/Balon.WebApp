@@ -25,8 +25,11 @@ export function pushDataLayerEvent(
 function trackGoogleAdsConversion() {
   if (typeof window === "undefined") return;
   if (!GOOGLE_ADS_CONVERSION_SEND_TO || typeof window.gtag !== "function") return;
+  // Google Ads "Submit lead form" event (Click/event method — not page-load).
   window.gtag("event", "conversion", {
     send_to: GOOGLE_ADS_CONVERSION_SEND_TO,
+    value: 1.0,
+    currency: "CAD",
   });
 }
 
