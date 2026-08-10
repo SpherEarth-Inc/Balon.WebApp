@@ -1,6 +1,7 @@
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[];
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
     _linkedin_partner_id?: string;
     _linkedin_data_partner_ids?: string[];
     lintrk?: (action: string, data?: Record<string, unknown>) => void;
@@ -8,6 +9,9 @@ declare global {
     twq?: (...args: unknown[]) => void;
   }
 }
+
+const GOOGLE_ADS_CONVERSION_SEND_TO =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO?.trim();
 
 export function pushDataLayerEvent(
   event: string,
@@ -18,9 +22,18 @@ export function pushDataLayerEvent(
   window.dataLayer.push({ event, ...payload });
 }
 
+function trackGoogleAdsConversion() {
+  if (typeof window === "undefined") return;
+  if (!GOOGLE_ADS_CONVERSION_SEND_TO || typeof window.gtag !== "function") return;
+  window.gtag("event", "conversion", {
+    send_to: GOOGLE_ADS_CONVERSION_SEND_TO,
+  });
+}
+
 /** Google Ads / GTM conversion for a successful Admissions Apply submit. */
 export function trackAdmissionsApplyConversion() {
   pushDataLayerEvent("admissions_apply_submit");
+  trackGoogleAdsConversion();
 }
 
 const LINKEDIN_CONVERSION_ID = process.env.NEXT_PUBLIC_LINKEDIN_ADVISOR_CONVERSION_ID;

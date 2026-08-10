@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Oswald, Space_Grotesk } from "next/font/google";
 import { AnalyticsScripts } from "@/components/analytics/analytics-scripts";
+import { GoogleAdsTag } from "@/components/analytics/google-ads-tag";
 import {
   GoogleTagManagerNoscript,
   GoogleTagManagerScript,
@@ -33,7 +34,9 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${oswald.variable} h-full antialiased`}
     >
       <head>
-        {/* Google requires the GTM bootstrap as high in <head> as possible */}
+        {/* Google Ads gtag — immediately after <head>, per Google Ads install instructions */}
+        <GoogleAdsTag />
+        {/* GTM bootstrap — site-wide container + custom conversion events */}
         <GoogleTagManagerScript />
       </head>
       <body className="flex min-h-full flex-col">
